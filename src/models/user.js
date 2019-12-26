@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { hash } from 'bcryptjs'
+import { hash, compare } from 'bcryptjs'
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -19,11 +19,17 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 })
 
+// hash password before saving user.
 userSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await hash(this.password, 10)
   }
 })
+
+// checks password against hashed password.
+userSchema.methods.matchesPassword = function (password) {
+  return compare(password, this.password)
+}
 
 // static method for determining whether a field is in the database already
 userSchema.statics.doesntExist = async function (options) {
