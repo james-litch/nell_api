@@ -1,14 +1,25 @@
-import AuthenticationError from 'apollo-server-express'
+import { AuthenticationError } from 'apollo-server-express'
 import jwt from 'jsonwebtoken'
 import { User } from '../models'
-
-const JWT_KEY = process.env.JWT_KEY
-const JWT_TOKEN_LIFE = process.env.JWT_TOKEN_LIFE
+import { JWT_KEY, JWT_TOKEN_LIFE } from '../../config'
 
 const invalidDetails = 'Email or password is incorrect. Please try again.'
 
-export const checkSignedIn = req => {
-  if (!req.isAuth) throw new AuthenticationError('You must be signed in.')
+export const checkSignedIn = user => {
+  console.log(user)
+  if (!user) throw new AuthenticationError('You must be signed in.')
+}
+
+export const validateToken = token => {
+  let decodedToken
+
+  try {
+    decodedToken = jwt.verify(token, JWT_KEY)
+  } catch (err) {
+    decodedToken = null
+  }
+
+  return decodedToken
 }
 
 export const attemptSignIn = async (email, password) => {
@@ -24,7 +35,7 @@ export const attemptSignIn = async (email, password) => {
 }
 
 export const generateToken = (id, email) => {
-  const token = jwt.sign({ userId: id, email: email }, JWT_KEY, { expiresIn: `${JWT_TOKEN_LIFE}h` })
+  const token = jwt.sign({ id: id, email: email }, JWT_KEY, { expiresIn: `${JWT_TOKEN_LIFE}h` })
 
   return token
 }

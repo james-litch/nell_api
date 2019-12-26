@@ -6,9 +6,12 @@ import * as Auth from '../helpers/auth'
 
 export default {
   Query: {
-
-    users: (root, args, { req }, info) => {
-      // TODO: authenticated? projection sanitisation
+    me: async (root, args, { user }, info) => {
+      Auth.checkSignedIn(user)
+      return user
+    },
+    users: async (root, args, { user }, info) => {
+      if (!user) throw new AuthenticationError('you must be logged in')
       return User.find({})
     },
 
@@ -37,11 +40,12 @@ export default {
       if (error) throw new UserInputError(error.details[0].message)
 
       // check credentials
-      const user = Auth.attemptSignIn(args.email, args.password)
+      const user = await Auth.attemptSignIn(args.email, args.password)
       if (!user) throw new AuthenticationError('incorrect credentials')
 
       // issue jwt token
-      return Auth.generateToken(user.id, user.email)
+      const token = await Auth.generateToken(user.id, user.email)
+      return { token }
     }
   }
 }

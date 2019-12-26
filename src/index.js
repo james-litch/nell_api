@@ -3,6 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+import * as Auth from './helpers/auth'
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME
 } from '../config'
@@ -16,7 +17,7 @@ import {
 
     const app = express()
 
-    // app.use(isAuth)
+    // app.use('/', isAuth)
 
     app.disable('x-powered-by')
 
@@ -24,7 +25,11 @@ import {
       typeDefs,
       resolvers,
       playground: !IN_PROD,
-      context: ({ req, res }) => ({ req, res })
+      context: async ({ req, res }) => {
+        const token = req.headers.authorization || ''
+        const user = await Auth.validateToken(token)
+        return { user }
+      }
     })
 
     server.applyMiddleware({ app })
