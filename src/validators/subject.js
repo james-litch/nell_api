@@ -1,9 +1,8 @@
 import Joi from '@hapi/joi';
 import JoiObjectId from 'joi-objectid';
 
-const name = Joi.string().required().min(3).max(254)
-  .label('Name');
-const password = Joi.string().required().min(5).label('Password');
+const name = Joi.string().required().min(3).max(254);
+const password = Joi.string().required().min(5);
 const id = JoiObjectId(Joi);
 
 const createSubject = (data) => {

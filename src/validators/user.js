@@ -1,9 +1,11 @@
 import Joi from '@hapi/joi';
+import JoiObjectId from 'joi-objectid';
 
 const name = Joi.string().required().min(3).max(254)
   .label('Name');
 const email = Joi.string().email().required().label('Email');
 const password = Joi.string().required().min(5).label('Password');
+const id = JoiObjectId(Joi);
 
 const signUp = (data) => {
   const schema = Joi.object({
@@ -19,7 +21,15 @@ const signIn = (data) => {
   return schema.validate(data);
 };
 
+const findUser = (data) => {
+  const schema = Joi.object({
+    id,
+  });
+  return schema.validate(data);
+};
+
 export {
   signIn,
   signUp,
+  findUser,
 };

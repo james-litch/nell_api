@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import { User } from '../../models';
-import { signUp, signIn } from '../../validators';
+import { signUp, signIn, findUser } from '../../validators';
 import { attemptSignIn, generateToken } from '../../authentication/user';
 
 export default {
@@ -10,10 +10,12 @@ export default {
 
     users: async (root, args, { user }, info) => User.find({}),
 
-    user: (root, { id }, context, info) => {
-      if (!mongoose.Types.ObjectId.isValid(id)) throw new UserInputError(`${id} is not a valid user ID`);
+    user: (root, args, context, info) => {
+      // validate inputs
+      const { error } = findUser(args);
+      if (error) throw new UserInputError(error.details[0].message);
 
-      return User.findById(id);
+      return User.findById(args.id);
     },
   },
 
@@ -27,7 +29,7 @@ export default {
       return User.create(args);
     },
 
-    signIn: async (root, args, { req }, info) => {
+    signIn: async (root, args, context, info) => {
       // validate inputs
       const { error } = signIn(args);
       if (error) throw new UserInputError(error.details[0].message);
