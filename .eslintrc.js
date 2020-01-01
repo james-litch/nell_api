@@ -20,6 +20,7 @@ module.exports = {
     "no-unused-vars": "off",
     "no-use-before-define": "off",
     "func-names": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "newline-per-chained-call": "off"
   },
 };
