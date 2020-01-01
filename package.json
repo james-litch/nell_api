@@ -5,7 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon --exec babel-node src/index.js"
   },
-  "author": "",
+  "author": "James Litchfield",
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^16.1.8",
@@ -14,6 +14,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
+    "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.3"
   },
@@ -21,8 +22,10 @@
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
-    "nodemon": "^2.0.2",
-    "standard": "^14.3.1"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "nodemon": "^2.0.2"
   },
-  "description": ""
+  "description": "A GraphQL and mongoose based API for the Nell app "
 }
