@@ -1,46 +1,23 @@
-import mongoose from 'mongoose';
-import { UserInputError, AuthenticationError } from 'apollo-server-express';
-import { User } from '../../models';
-import { signUp, signIn, findUser } from '../../validators';
-import { attemptSignIn, generateToken } from '../../authentication/user';
+import * as UserController from '../../controllers/user';
+import { subjectsFromIds } from '../../controllers/subject';
 
 export default {
   Query: {
-    me: async (root, args, { user }, info) => user,
+    me: (root, args, { user }, info) => user,
 
-    users: async (root, args, { user }, info) => User.find({}),
+    users: (root, args, { user }, info) => UserController.getUsers(),
 
-    user: (root, args, context, info) => {
-      // validate inputs
-      const { error } = findUser(args);
-      if (error) throw new UserInputError(error.details[0].message);
-
-      return User.findById(args.id);
-    },
+    user: (root, args, { user }, info) => UserController.getUser(args.id),
   },
 
   Mutation: {
 
-    signUp: async (root, args, context, info) => {
-      // validate inputs
-      const { error } = signUp(args);
-      if (error) throw new UserInputError(error.details[0].message);
+    signUp: (root, args, context, info) => UserController.signUp(args),
 
-      return User.create(args);
-    },
+    signIn: (root, args, context, info) => UserController.signIn(args),
+  },
 
-    signIn: async (root, args, context, info) => {
-      // validate inputs
-      const { error } = signIn(args);
-      if (error) throw new UserInputError(error.details[0].message);
-
-      // check credentials
-      const user = await attemptSignIn(args.email, args.password);
-      if (!user) throw new AuthenticationError('incorrect credentials');
-
-      // issue jwt token
-      const token = await generateToken(user.id, user.email);
-      return { token };
-    },
+  User: {
+    subjects: ({ subjects }, args, context, info) => subjectsFromIds(subjects),
   },
 };

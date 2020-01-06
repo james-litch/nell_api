@@ -1,34 +1,22 @@
-import { UserInputError } from 'apollo-server-express';
-import * as Validate from '../../validators';
-import { Subject } from '../../models';
-import * as SubjectAuth from '../../authentication/subject';
-
+import * as SubjectController from '../../controllers/subject';
+import * as UserController from '../../controllers/user';
 
 export default {
   Mutation: {
-    createSubject: (root, args, { user }, info) => {
-      // validate inputs
-      const { error } = Validate.createSubject(args);
-      if (error) throw new UserInputError(error.details[0].message);
+    createSubject: (root, args, { user }, info) => SubjectController.createSubject({
+      user,
+      name: args.name,
+      password: args.password,
+    }),
 
-      return Subject.create({
-        name: args.name,
-        creator: user.id,
-        password: args.password,
-      });
-    },
-    joinSubject: async (root, args, { user }, info) => {
-      // validate inputs
-      const { error } = Validate.joinSubject(args);
-      if (error) throw new UserInputError(error.details[0].message);
-
-      const subject = await SubjectAuth.attemptJoin;
-
-      // add user to subject
-      // add subject to user
-      // return subject
-
-      return subject;
-    },
+    joinSubject: (root, args, { user }, info) => SubjectController.joinSubject({
+      user,
+      id: args.id,
+      password: args.password,
+    }),
+  },
+  Subject: {
+    creator: ({ creator }, args, context, info) => UserController.getUser(creator),
+    users: ({ id }, args, context, info) => UserController.getUser(id),
   },
 };
