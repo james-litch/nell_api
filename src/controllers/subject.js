@@ -5,23 +5,25 @@ import * as SubjectValidation from '../validators/subject';
 
 const INVALID_CREDENTIALS = 'ID or password is incorrect. Please try again.';
 
-const joinSubject = async ({ id, password }) => {
+const joinSubject = async ({ id, password, user }) => {
   // validate inputs
   const { error } = SubjectValidation.joinSubject({ id, password });
   if (error) throw new UserInputError(error.details[0].message);
 
   // check subject exists
   const subject = await Subject.findById(id);
-  if (subject) throw new AuthenticationError(INVALID_CREDENTIALS);
+
+  if (!subject) throw new AuthenticationError(INVALID_CREDENTIALS);
 
   // check password is correct
   const match = await subject.matchesPassword(password);
   if (!match) throw new AuthenticationError(INVALID_CREDENTIALS);
 
-  return subject;
+  // add subject to users subjects and user to subjects users.
+  await user.updateOne({ $push: { subjects: subject } });
+  await subject.updateOne({ $push: { users: user.id } });
 
-  // check if already in subject
-  // add user to subject
+  return subject;
 };
 
 const createSubject = async ({ name, password, user }) => {
