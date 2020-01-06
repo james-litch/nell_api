@@ -32,11 +32,6 @@ subjectSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
-// static method for determining whether a field is in the database already
-subjectSchema.statics.doesntExist = async function (options) {
-  return await this.countDocuments(options) === 0;
-};
-
 const Subject = mongoose.model('Subject', subjectSchema);
 
 export default Subject;

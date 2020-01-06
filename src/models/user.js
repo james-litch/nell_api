@@ -10,20 +10,15 @@ const userSchema = new Schema({
     validate: {
       validator: (email) => User.doesntExist({ email }),
       message: ({ value }) => `${value} has already been taken.`,
-      // TODO: security
     },
   },
   name: String,
 
   password: String,
 
-  modules: [{
+  subjects: [{
     type: ObjectId,
     ref: 'Subject',
-    validate: {
-      validator: (_id) => User.doesntExist({ _id }),
-      message: ({ value }) => `${value} Already in module.`,
-    },
   }],
 
 }, {
@@ -42,8 +37,10 @@ userSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
+
 // static method for determining whether a field is in the database already
 userSchema.statics.doesntExist = async function (options) {
+  console.log(options);
   return await this.countDocuments(options) === 0;
 };
 
