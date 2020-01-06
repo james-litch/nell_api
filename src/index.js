@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
-import * as UserAuth from './authentication/user';
+import { userFromToken } from './controllers/user';
 import schemaDirectives from './graphql/directives';
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
@@ -27,7 +27,7 @@ import {
       playground: !IN_PROD,
       context: async ({ req, res }) => {
         const token = req.headers.authorization || '';
-        const user = await UserAuth.validateToken(token);
+        const user = await userFromToken(token);
         return { user };
       },
     });
