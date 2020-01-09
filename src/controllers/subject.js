@@ -20,8 +20,8 @@ const joinSubject = async ({ id, password, user }) => {
   if (!match) throw new AuthenticationError(INVALID_CREDENTIALS);
 
   // add subject to users subjects and user to subjects users.
-  await user.updateOne({ $push: { subjects: subject } });
-  await subject.updateOne({ $push: { users: user.id } });
+  await User.findOneAndUpdate({ _id: user.id }, { $addToSet: { subjects: subject } });
+  await subject.updateOne({ $addToSet: { users: user.id } });
 
   return subject;
 };
@@ -33,15 +33,34 @@ const createSubject = async ({ name, password, user }) => {
 
   const subject = await Subject.create({ name, creator: user.id, password });
 
-  await user.updateOne({ $push: { subjects: subject } });
+  await User.findOneAndUpdate({ _id: user.id }, { $addToSet: { subjects: subject } });
 
   return subject;
 };
 
 const subjectsFromIds = (subjects) => Subject.find().where('_id').in(subjects).exec();
 
+const addDefinition = async ({
+  user, subjectId, phrase, definition,
+}) => {
+  // TODO: validate inputs.
+
+  // find the subject exists.
+  const subject = await Subject.findById(subjectId);
+  if (!subject) throw new UserInputError('Invalid details');
+
+  // check if user is the creator. TODO: add to a directive
+  const creator = await subject.isCreator(user.id);
+  if (!creator) throw new AuthenticationError('UNAUTHENTICATED');
+
+  await subject.updateOne({ $push: { dictionary: { phrase, definition } } });
+
+  return 'success';
+};
+
 export {
   joinSubject,
   createSubject,
   subjectsFromIds,
+  addDefinition,
 };
