@@ -5,8 +5,21 @@ export default gql`
     id: ID!
     question: String!
     answers: [String!]!
-    currectAnswer: String!
+    correctAnswer: String!
     createdAt: String!
     updatedAt: String!
+  }
+
+  type Exam{
+    name: String!
+    description: String!
+    questions: [Question!]!
+  }
+
+  type CurrentQuestion{
+    description: String!
+    question: Question!
+    answeredRight: Int!
+    
   }
 `;
