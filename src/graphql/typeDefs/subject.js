@@ -7,8 +7,10 @@ export default gql`
   }
  
   extend type Mutation{
-    createSubject(name: String!, password: String!): Subject @auth
-    joinSubject(id: ID!, password: String!): Subject @auth
+    createSubject(input: CreateSubject): Subject @auth
+    joinSubject(input: JoinSubject): Subject @auth
+
+    addDefinition(input: AddDefinition): String @auth
   }
 
   type Subject{
@@ -16,6 +18,40 @@ export default gql`
     name: String!
     creator: User!
     users: [User!]!
+    createdAt: String!
+    updatedAt: String!
+    dictionary(phrase: String): [Definition!]
+    # exams: [Exam!]
+    # currentQuestions: [Question!]
+  }
+
+  type Definition{
+    id: ID!
+    phrase: String!
+    definition: String!
+  }
+
+  input AddDefinition{
+    subject: ID! 
+    phrase: String!
+    definition: String!
+  }
+
+  input JoinSubject{
+    id: ID! 
+    password: String!
+  }
+
+  input CreateSubject{
+    name: String! 
+    password: String!
+  }
+
+  type Question{
+    id: ID!
+    question: String!
+    answers: [String!]!
+    correctAnswer: String!
     createdAt: String!
     updatedAt: String!
   }
