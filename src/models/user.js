@@ -16,14 +16,11 @@ const userSchema = new Schema({
 
   password: String,
 
-  subjects: [{
-    type: ObjectId,
-    ref: 'Subject',
-  }],
+  subjects: [{ type: ObjectId, ref: 'Subject' }],
 
-}, {
-  timestamps: true,
-});
+},
+
+{ timestamps: true });
 
 // hash password before saving user.
 userSchema.pre('save', async function () {
@@ -37,10 +34,8 @@ userSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
-
 // static method for determining whether a field is in the database already
 userSchema.statics.doesntExist = async function (options) {
-  console.log(options);
   return await this.countDocuments(options) === 0;
 };
 
