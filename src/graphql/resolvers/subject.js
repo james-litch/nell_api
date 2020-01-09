@@ -3,16 +3,23 @@ import * as UserController from '../../controllers/user';
 
 export default {
   Mutation: {
-    createSubject: (root, args, { user }, info) => SubjectController.createSubject({
+    createSubject: (root, { input }, { user }, info) => SubjectController.createSubject({
       user,
-      name: args.name,
-      password: args.password,
+      name: input.name,
+      password: input.password,
     }),
 
-    joinSubject: (root, args, { user }, info) => SubjectController.joinSubject({
+    joinSubject: (root, { input }, { user }, info) => SubjectController.joinSubject({
       user,
-      id: args.id,
-      password: args.password,
+      id: input.id,
+      password: input.password,
+    }),
+
+    addDefinition: (root, { input }, { user }, info) => SubjectController.addDefinition({
+      user,
+      subjectId: input.subject,
+      phrase: input.phrase,
+      definition: input.definition,
     }),
   },
   Subject: {

@@ -3,7 +3,7 @@ import { subjectsFromIds } from '../../controllers/subject';
 
 export default {
   Query: {
-    me: (root, args, { user }, info) => user,
+    me: (root, args, { user }, info) => UserController.getUser(user.id),
 
     users: (root, args, { user }, info) => UserController.getUsers(),
 
@@ -11,10 +11,9 @@ export default {
   },
 
   Mutation: {
+    signUp: (root, { input }, context, info) => UserController.signUp(input),
 
-    signUp: (root, args, context, info) => UserController.signUp(args),
-
-    signIn: (root, args, context, info) => UserController.signIn(args),
+    signIn: (root, { input }, context, info) => UserController.signIn(input),
   },
 
   User: {
