@@ -8,8 +8,8 @@ export default gql`
     }
 
     extend type Mutation{
-        signUp(email: String!, name: String!, password: String!): User
-        signIn(email: String!, password: String!): AuthData
+        signUp(input: SignUp): User
+        signIn(input: SignIn): AuthData
     }
 
     type User{
@@ -24,4 +24,22 @@ export default gql`
     type AuthData{
         token: String!
     }
+
+    input SignIn{
+        email: String!
+        password: String!
+    }
+
+    input SignUp{
+        email: String!
+        name: String!
+        password: String!
+    }
+
+    # interface SignInResponse{
+    #     code: String!
+    #     success: Boolean!
+    #     message: String!
+    #     user: User
+    # }
 `;

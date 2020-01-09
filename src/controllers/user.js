@@ -30,7 +30,12 @@ const signIn = async (args) => {
 
 
   // issue jwt token
-  return generateToken({ id: user.id, email: user.email });
+  return generateToken({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    subjects: user.subjects,
+  });
 };
 
 const ensureSignedIn = (user) => {
@@ -42,13 +47,7 @@ const userFromToken = async (token) => {
   const validToken = validateToken(token);
   if (!validToken) return null;
 
-  let user;
-  try {
-    user = await User.findById(validToken.id);
-  } catch (err) {
-    console.log(err);
-  }
-  return user;
+  return token;
 };
 
 const getUser = async (id) => User.findById(id);
