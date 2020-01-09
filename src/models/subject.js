@@ -5,20 +5,17 @@ const { ObjectId } = Schema.Types;
 
 const subjectSchema = new Schema({
   name: String,
-  creator: {
-    type: ObjectId,
-    ref: 'User',
-  },
+
+  creator: { type: ObjectId, ref: 'User' },
 
   password: String,
 
-  users: [{
-    type: ObjectId,
-    ref: 'User',
-  }],
-}, {
-  timestamps: true,
-});
+  users: [{ type: ObjectId, ref: 'User' }],
+
+  dictionary: [{ phrase: String, definition: String }],
+},
+
+{ timestamps: true });
 
 // hash password before saving user.
 subjectSchema.pre('save', async function () {
@@ -30,6 +27,11 @@ subjectSchema.pre('save', async function () {
 // checks password against hashed password.
 subjectSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
+};
+
+// checks if user is the creator of a subject.
+subjectSchema.methods.isCreator = function (userId) {
+  return this.creator.equals(userId);
 };
 
 const Subject = mongoose.model('Subject', subjectSchema);
