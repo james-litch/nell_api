@@ -16,14 +16,23 @@ export default {
     }),
 
     addDefinition: (root, { input }, { user }, info) => SubjectController.addDefinition({
-      user,
+      userId: user.id,
       subjectId: input.subject,
       phrase: input.phrase,
       definition: input.definition,
+    }),
+
+    addQuestion: (root, { input }, { user }, info) => SubjectController.addQuestion({
+      userId: user.id,
+      subjectId: input.subject,
+      question: input.question,
+      answers: input.answers,
+      correctAnswer: input.correctAnswer,
     }),
   },
   Subject: {
     creator: ({ creator }, args, context, info) => UserController.getUser(creator),
     users: ({ id }, args, context, info) => UserController.getUser(id),
+    questions: ({ questions }, args, context, info) => SubjectController.getQuestions(questions),
   },
 };

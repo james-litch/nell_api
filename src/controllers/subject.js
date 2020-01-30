@@ -1,9 +1,23 @@
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
-import { Subject, User } from '../models';
+import { Subject, User, Question } from '../models';
 
 import * as SubjectValidation from '../validators/subject';
 
 const INVALID_CREDENTIALS = 'ID or password is incorrect. Please try again.';
+
+const subjectExists = async (id) => {
+  // find if the subject exists.
+  const subject = await Subject.findById(id);
+  if (!subject) throw new UserInputError('Invalid details');
+  return subject;
+};
+
+const isCreator = async (userId, subject) => {
+  const creator = await subject.isCreator(userId);
+  if (!creator) throw new AuthenticationError('UNAUTHENTICATED');
+};
+
+const subjectsFromIds = (subjects) => Subject.find().where('_id').in(subjects).exec();
 
 const joinSubject = async ({ id, password, user }) => {
   // validate inputs
@@ -11,9 +25,7 @@ const joinSubject = async ({ id, password, user }) => {
   if (error) throw new UserInputError(error.details[0].message);
 
   // check subject exists
-  const subject = await Subject.findById(id);
-
-  if (!subject) throw new AuthenticationError(INVALID_CREDENTIALS);
+  const subject = subjectExists(id);
 
   // check password is correct
   const match = await subject.matchesPassword(password);
@@ -38,29 +50,52 @@ const createSubject = async ({ name, password, user }) => {
   return subject;
 };
 
-const subjectsFromIds = (subjects) => Subject.find().where('_id').in(subjects).exec();
-
 const addDefinition = async ({
-  user, subjectId, phrase, definition,
+  userId, subjectId, phrase, definition,
 }) => {
-  // TODO: validate inputs.
+  // validate inputs
+  const { error } = SubjectValidation.addDefinition({
+    userId, subjectId, phrase, definition,
+  });
+  if (error) return new UserInputError(error.details[0].message);
 
-  // find the subject exists.
-  const subject = await Subject.findById(subjectId);
-  if (!subject) throw new UserInputError('Invalid details');
+  const subject = await subjectExists(subjectId);
 
-  // check if user is the creator. TODO: add to a directive
-  const creator = await subject.isCreator(user.id);
-  if (!creator) throw new AuthenticationError('UNAUTHENTICATED');
+  await isCreator(userId, subject);
 
   await subject.updateOne({ $push: { dictionary: { phrase, definition } } });
 
   return 'success';
 };
 
+const addQuestion = async ({
+  userId, subjectId, question, answers, correctAnswer,
+}) => {
+  const { error } = SubjectValidation.addQuestion({
+    userId, subjectId, question, answers, correctAnswer,
+  });
+  if (error) return new UserInputError(error.details[0].message);
+
+  const subject = await subjectExists(subjectId);
+
+  await isCreator(userId, subject);
+
+  const createdQuestion = await Question.create({ question, answers, correctAnswer });
+
+  await subject.updateOne({ $addToSet: { questions: createdQuestion } });
+
+  return 'success';
+};
+
+const getQuestions = (questions) => Question.find().where('_id').in(questions).exec();
+
+
 export {
   joinSubject,
   createSubject,
   subjectsFromIds,
   addDefinition,
+  getQuestions,
+  addQuestion,
+  isCreator,
 };

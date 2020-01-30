@@ -21,6 +21,7 @@ export default gql`
     dictionary(phrase: String): [Definition!]
     exams: [Exam!]
     currentQuestions: [CurrentQuestion!]
+    questions: [Question!]
   }
 
   input JoinSubject{

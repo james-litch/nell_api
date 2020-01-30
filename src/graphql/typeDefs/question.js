@@ -1,6 +1,11 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
+
+  extend type Mutation{
+    addQuestion(input: AddQuestion) : String @auth
+  }
+
   type Question{
     id: ID!
     question: String!
@@ -21,5 +26,12 @@ export default gql`
     question: Question!
     answeredRight: Int!
     
+  }
+
+  input AddQuestion{
+    subject: ID!
+    question: String!
+    answers: [String!]!
+    correctAnswer: String!
   }
 `;
