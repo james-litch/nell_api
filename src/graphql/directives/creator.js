@@ -1,6 +1,6 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver } from 'graphql';
-import { isCreator } from '../../controllers/subject';
+import { ValidationController } from '../../controllers';
 
 class CreatorDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
@@ -9,7 +9,7 @@ class CreatorDirective extends SchemaDirectiveVisitor {
     field.resolve = function (...args) {
       const { user } = args[2];
       const { input } = args[1];
-      isCreator({ userId: user.id, subjectId: input.subject });
+      ValidationController.isCreator({ userId: user.id, subjectId: input.subject });
       return resolve.apply(this, args);
     };
   }
