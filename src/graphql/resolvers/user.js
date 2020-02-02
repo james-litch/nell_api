@@ -1,5 +1,4 @@
-import * as UserController from '../../controllers/user';
-import { subjectsFromIds } from '../../controllers/subject';
+import { UserController, SubjectController } from '../../controllers';
 
 export default {
   Query: {
@@ -17,6 +16,6 @@ export default {
   },
 
   User: {
-    subjects: ({ subjects }, args, context, info) => subjectsFromIds(subjects),
+    subjects: ({ subjects }, args, context, info) => SubjectController.subjectsFromIds(subjects),
   },
 };
