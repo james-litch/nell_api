@@ -29,6 +29,8 @@ const findUser = (data) => {
   return schema.validate(data);
 };
 
+// TODO: add change password
+
 export {
   signIn,
   signUp,
