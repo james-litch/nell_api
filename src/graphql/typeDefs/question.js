@@ -4,6 +4,8 @@ export default gql`
 
   extend type Mutation{
     addQuestion(input: AddQuestion) : String @auth
+    createExam(input: CreateExam): String @auth
+    createCurrentQuestion(input: CreateCurrentQuestion): String @auth
   }
 
   type Question{
@@ -33,5 +35,18 @@ export default gql`
     question: String!
     answers: [String!]!
     correctAnswer: String!
+  }
+
+  input CreateExam{
+    subject: ID!
+    name: String!
+    description: String!
+    questions: [ID!]!
+  }
+
+  input CreateCurrentQuestion{
+    subject: ID!
+    description: String!
+    questions: ID!
   }
 `;
