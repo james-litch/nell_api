@@ -1,35 +1,17 @@
-import { UserInputError, AuthenticationError } from 'apollo-server-express';
-import { Subject, User, Question } from '../models';
-
+import { Subject, User } from '../models';
 import * as SubjectValidation from '../validators/subject';
-
-const INVALID_CREDENTIALS = 'ID or password is incorrect. Please try again.';
-
-const subjectExists = async (id) => {
-  // find if the subject exists.
-  const subject = await Subject.findById(id);
-  if (!subject) throw new UserInputError('Invalid details');
-  return subject;
-};
-
-const isCreator = async (userId, subject) => {
-  const creator = await subject.isCreator(userId);
-  if (!creator) throw new AuthenticationError('UNAUTHENTICATED');
-};
+import { subjectExists, validateInput, matchesPassword } from './validate';
 
 const subjectsFromIds = (subjects) => Subject.find().where('_id').in(subjects).exec();
 
 const joinSubject = async ({ id, password, user }) => {
   // validate inputs
-  const { error } = SubjectValidation.joinSubject({ id, password });
-  if (error) throw new UserInputError(error.details[0].message);
+  validateInput({ subjectId: id, password }, SubjectValidation.joinSubject);
 
   // check subject exists
-  const subject = subjectExists(id);
+  const subject = await subjectExists(id);
 
-  // check password is correct
-  const match = await subject.matchesPassword(password);
-  if (!match) throw new AuthenticationError(INVALID_CREDENTIALS);
+  await matchesPassword(subject, password);
 
   // add subject to users subjects and user to subjects users.
   await User.findOneAndUpdate({ _id: user.id }, { $addToSet: { subjects: subject } });
@@ -39,9 +21,7 @@ const joinSubject = async ({ id, password, user }) => {
 };
 
 const createSubject = async ({ name, password, user }) => {
-  // validate inputs
-  const { error } = SubjectValidation.createSubject({ name, password });
-  if (error) throw new UserInputError(error.details[0].message);
+  validateInput({ name, password }, SubjectValidation.createSubject);
 
   const subject = await Subject.create({ name, creator: user.id, password });
 
@@ -50,52 +30,11 @@ const createSubject = async ({ name, password, user }) => {
   return subject;
 };
 
-const addDefinition = async ({
-  userId, subjectId, phrase, definition,
-}) => {
-  // validate inputs
-  const { error } = SubjectValidation.addDefinition({
-    userId, subjectId, phrase, definition,
-  });
-  if (error) return new UserInputError(error.details[0].message);
-
-  const subject = await subjectExists(subjectId);
-
-  await isCreator(userId, subject);
-
-  await subject.updateOne({ $push: { dictionary: { phrase, definition } } });
-
-  return 'success';
-};
-
-const addQuestion = async ({
-  userId, subjectId, question, answers, correctAnswer,
-}) => {
-  const { error } = SubjectValidation.addQuestion({
-    userId, subjectId, question, answers, correctAnswer,
-  });
-  if (error) return new UserInputError(error.details[0].message);
-
-  const subject = await subjectExists(subjectId);
-
-  await isCreator(userId, subject);
-
-  const createdQuestion = await Question.create({ question, answers, correctAnswer });
-
-  await subject.updateOne({ $addToSet: { questions: createdQuestion } });
-
-  return 'success';
-};
-
-const getQuestions = (questions) => Question.find().where('_id').in(questions).exec();
-
+const getSubject = async (id) => subjectExists(id);
 
 export {
   joinSubject,
   createSubject,
   subjectsFromIds,
-  addDefinition,
-  getQuestions,
-  addQuestion,
-  isCreator,
+  getSubject,
 };
