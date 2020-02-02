@@ -14,7 +14,9 @@ const subjectSchema = new Schema({
 
   questions: [{ type: ObjectId, ref: 'Question' }],
 
-  // TODO: currentQuestions and exams.
+  // TODO: currentQuestions
+
+  exams: [{ name: String, description: String, questions: [{ type: ObjectId, ref: 'Question' }] }],
 
   dictionary: [{ phrase: String, definition: String }],
 },
