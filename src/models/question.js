@@ -9,6 +9,6 @@ const questionSchema = new Schema({
 },
 { timestamps: true });
 
-const Question = mongoose.model('Qser', questionSchema);
+const Question = mongoose.model('Question', questionSchema);
 
 export default Question;
