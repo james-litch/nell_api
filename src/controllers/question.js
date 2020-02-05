@@ -22,7 +22,12 @@ const addQuestion = async ({
 
 const getQuestions = (questions) => Question.find().where('_id').in(questions).exec();
 
+const deleteQuestion = () => {
+
+};
+
 export {
   addQuestion,
   getQuestions,
+  deleteQuestion,
 };

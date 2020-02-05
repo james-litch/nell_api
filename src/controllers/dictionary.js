@@ -18,4 +18,11 @@ const addDefinition = async ({
   return 'success';
 };
 
-export default addDefinition;
+const deleteDefinition = () => {
+
+};
+
+export {
+  addDefinition,
+  deleteDefinition,
+};

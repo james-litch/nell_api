@@ -32,9 +32,14 @@ const createSubject = async ({ name, password, user }) => {
 
 const getSubject = async (id) => subjectExists(id);
 
+const leaveSubject = () => {
+
+};
+
 export {
   joinSubject,
   createSubject,
   subjectsFromIds,
   getSubject,
+  leaveSubject,
 };

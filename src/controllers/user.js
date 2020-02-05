@@ -54,6 +54,13 @@ const getUser = async (id) => User.findById(id);
 
 const getUsers = async () => User.find({});
 
+const deleteAccount = () => {
+
+};
+
+const changePassword = () => {
+
+};
 
 export {
   signUp,
@@ -62,4 +69,6 @@ export {
   userFromToken,
   getUser,
   getUsers,
+  deleteAccount,
+  changePassword,
 };
