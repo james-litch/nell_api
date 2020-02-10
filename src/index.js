@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 import schemaDirectives from './graphql/directives';
+import { ValidationController } from './controllers';
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
 } from '../config';
@@ -18,18 +19,14 @@ import { validateToken } from './helpers/token';
 
     const app = express();
 
-    app.disable('x-powered-by');
+    app.use(ValidationController.validateTokens);
 
     const server = new ApolloServer({
       typeDefs,
       resolvers,
       schemaDirectives,
       playground: !IN_PROD,
-      context: ({ req, res }) => {
-        const token = req.headers.authorization || '';
-        const user = validateToken(token);
-        return { user };
-      },
+      context: ({ req, res }) => ({ req, res }),
     });
 
     server.applyMiddleware({ app });
