@@ -1,6 +1,6 @@
 import { SchemaDirectiveVisitor } from 'apollo-server-express';
 import { defaultFieldResolver } from 'graphql';
-import { UserController } from '../../controllers';
+import { ValidationController } from '../../controllers';
 
 class AuthDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
@@ -8,7 +8,7 @@ class AuthDirective extends SchemaDirectiveVisitor {
 
     field.resolve = function (...args) {
       const [, , context] = args;
-      UserController.ensureSignedIn(context.user);
+      ValidationController.ensureSignedIn(context.req.userId);
       return resolve.apply(this, args);
     };
   }
