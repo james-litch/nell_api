@@ -30,6 +30,13 @@ const joinSubject = (data) => {
   return schema.validate(data);
 };
 
+const leaveSubject = (data) => {
+  const schema = Joi.object({
+    userId: id, subjectId: id,
+  });
+  return schema.validate(data);
+};
+
 const addDefinition = (data) => {
   const schema = Joi.object({
     userId: id, subjectId: id, phrase, definition,
@@ -51,10 +58,27 @@ const createExam = (data) => {
   return schema.validate(data);
 };
 
+const addCurrentQuestion = (data) => {
+  const schema = Joi.object({
+    userId: id, subjectId: id, questionId: id, description,
+  });
+  return schema.validate(data);
+};
+
+const askCreator = (data) => {
+  const schema = Joi.object({
+    userId: id, subjectId: id, question,
+  });
+  return schema.validate(data);
+};
+
 export {
   joinSubject,
   createSubject,
+  leaveSubject,
   addDefinition,
   addQuestion,
   createExam,
+  addCurrentQuestion,
+  askCreator,
 };
