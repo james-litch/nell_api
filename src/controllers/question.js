@@ -22,12 +22,13 @@ const addQuestion = async ({
 
 const getQuestions = (questions) => Question.find().where('_id').in(questions).exec();
 
-const deleteQuestion = () => {
-
+const deleteQuestions = (questions) => {
+// delete question
+// delete all occurances
 };
 
 export {
   addQuestion,
   getQuestions,
-  deleteQuestion,
+  deleteQuestions,
 };
