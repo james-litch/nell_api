@@ -9,7 +9,12 @@ export default gql`
 
     extend type Mutation{
         signUp(input: SignUp): User
-        signIn(input: SignIn): AuthData
+        signIn(input: SignIn): Tokens
+
+        invalidateToken: String
+
+        changePassword(input: ChangePassword): String @auth
+        deleteAccount(input: SignIn): String @auth
     }
 
     type User{
@@ -21,9 +26,10 @@ export default gql`
         updatedAt: String!
     }
 
-    type AuthData{
-        token: String!
-    }
+    type Tokens {
+        accessToken: String
+        refreshToken: String
+  }
 
     input SignIn{
         email: String!
@@ -34,6 +40,11 @@ export default gql`
         email: String!
         name: String!
         password: String!
+    }
+
+    input ChangePassword{
+        oldPassword: String!
+        newPassword: String!
     }
 
     # interface SignInResponse{
