@@ -1,2 +1,8 @@
-export { signUp, signIn, findUser } from './user';
-export { createSubject, joinSubject } from './subject';
+import * as UserValidation from './user';
+
+import * as SubjectValidation from './subject';
+
+export {
+  UserValidation,
+  SubjectValidation,
+};
