@@ -14,11 +14,14 @@ const subjectSchema = new Schema({
 
   questions: [{ type: ObjectId, ref: 'Question' }],
 
-  // TODO: currentQuestions
+  // TODO: figure this out
+  currentQuestions: [{ description: String, question: { type: ObjectId, ref: 'Question' } }],
 
   exams: [{ name: String, description: String, questions: [{ type: ObjectId, ref: 'Question' }] }],
 
   dictionary: [{ phrase: String, definition: String }],
+
+  creatorQuestions: [{ type: String }],
 },
 
 { timestamps: true });
