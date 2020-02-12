@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import mongoose, { Schema } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
 
@@ -18,6 +19,7 @@ const userSchema = new Schema({
 
   subjects: [{ type: ObjectId, ref: 'Subject' }],
 
+  tokenCount: { type: Number, default: 0 },
 },
 
 { timestamps: true });
@@ -26,6 +28,17 @@ const userSchema = new Schema({
 userSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await hash(this.password, 10);
+  }
+});
+
+// hash password after its been updated
+userSchema.pre('updateOne', async function () {
+  const docToUpdate = await this.model.findOne(this.getQuery());
+  if (docToUpdate.password !== this._update.$set.password) {
+    console.log(this._update.$set.password);
+    const newPassword = await hash(this._update.$set.password, 10);
+    console.log(newPassword);
+    this._update.$set.password = newPassword;
   }
 });
 
