@@ -8,7 +8,7 @@ import { ValidationController } from './controllers';
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
 } from '../config';
-import { validateToken } from './helpers/token';
+
 
 (async () => {
   try {
