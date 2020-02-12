@@ -1,5 +1,8 @@
+import mongoose from 'mongoose';
 import * as SubjectValidation from '../validators/subject';
 import { subjectExists, isCreator, validateInput } from './validate';
+
+const { ObjectId } = mongoose.Types;
 
 const addDefinition = async ({
   userId, subjectId, phrase, definition,
@@ -18,11 +21,22 @@ const addDefinition = async ({
   return 'success';
 };
 
-const deleteDefinition = () => {
+const deleteDefinitions = async ({
+  userId, subjectId, definitions,
+}) => {
+  const subject = await subjectExists(subjectId);
 
+  await isCreator(userId, subject);
+
+  // map strings to mongoose object id
+  const defIdArray = definitions.map((s) => ObjectId(s));
+
+  await subject.update({ $pull: { dictionary: { _id: { $in: defIdArray } } } });
+
+  return 'success';
 };
 
 export {
   addDefinition,
-  deleteDefinition,
+  deleteDefinitions,
 };
