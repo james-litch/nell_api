@@ -29,10 +29,16 @@ const findUser = (data) => {
   return schema.validate(data);
 };
 
-// TODO: add change password
+const changePassword = (data) => {
+  const schema = Joi.object({
+    userId: id, newPassword: password, oldPassword: password,
+  });
+  return schema.validate(data);
+};
 
 export {
   signIn,
   signUp,
   findUser,
+  changePassword,
 };
