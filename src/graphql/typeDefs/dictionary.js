@@ -4,6 +4,7 @@ export default gql`
 
   extend type Mutation{
     addDefinition(input: AddDefinition): String @auth
+    deleteDefinitions(input: DeleteDefinitions): String @auth
     
   }
 
@@ -17,5 +18,10 @@ export default gql`
     subject: ID! 
     phrase: String!
     definition: String!
+  }
+
+  input DeleteDefinitions{
+    subject: ID! 
+    definitions: [ID!]!
   }
 `;
