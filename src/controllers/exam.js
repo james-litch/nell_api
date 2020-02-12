@@ -20,11 +20,22 @@ const createExam = async ({
 
   return 'success';
 };
-const deleteExam = () => {
+const deleteExams = async ({ userId, subjectId, exams }) => {
+  validateInput({
+    userId, subjectId, exams,
+  }, SubjectValidation.deleteExam);
 
+  const subject = await subjectExists(subjectId);
+
+  await isCreator(userId, subject);
+
+  subject.updateMany({ $pull: { exams: { id: { $in: exams } } } });
+
+  return 'success';
 };
+
 
 export {
   createExam,
-  deleteExam,
+  deleteExams,
 };
