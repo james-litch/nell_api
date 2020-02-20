@@ -1,8 +1,13 @@
-import * as UserValidation from './user';
-
-import * as SubjectValidation from './subject';
+import * as UserInput from './user';
+import * as SubjectInput from './subject';
+import * as DictionaryInput from './dictionary';
+import * as QuestionInput from './question';
+import * as ExamInput from './exam';
 
 export {
-  UserValidation,
-  SubjectValidation,
+  UserInput,
+  SubjectInput,
+  DictionaryInput,
+  QuestionInput,
+  ExamInput,
 };

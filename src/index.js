@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 import schemaDirectives from './graphql/directives';
-import { ValidationController } from './controllers';
+import { Tokens } from './controllers';
 import {
   APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
 } from '../config';
@@ -19,7 +19,7 @@ import {
 
     const app = express();
 
-    app.use(ValidationController.validateTokens);
+    app.use(Tokens.persist);
 
     const server = new ApolloServer({
       typeDefs,

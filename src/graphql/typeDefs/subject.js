@@ -1,48 +1,31 @@
 import { gql } from 'apollo-server-express';
 
 export default gql`
-  
-  extend type Query{
-    subject(id: ID!): Subject @auth
-  }
- 
+
   extend type Mutation{
-    createSubject(input: CreateSubject): Subject @auth
-    joinSubject(input: JoinSubject): Subject @auth  
-    leaveSubject(input: LeaveSubject): String @auth
-    askCreator(input: AskCreator): String @auth
+     createSubject(input: CreateSubject): Subject @auth
+     joinSubject(input: JoinSubject): Subject @auth  
   }
 
   type Subject{
     id: ID!
     name: String!
-    creator: User!
-    users: [User!]!
+    admin: User!
+    users: [User!]
+    dictionary: [Definition!]
+    questions:[Question!]
     createdAt: String!
     updatedAt: String!
-    dictionary(phrase: String): [Definition!]
-    exams: [Exam!]
-    currentQuestions: [CurrentQuestion!]
-    questions: [Question!]
-    creatorQuestions: [String!]
+  }
+
+
+  input CreateSubject{
+    subjectName: String! 
+    password: String!
   }
 
   input JoinSubject{
-    id: ID! 
+    subjectId: ID! 
     password: String!
-  }
-
-  input CreateSubject{
-    name: String! 
-    password: String!
-  }
-
-  input LeaveSubject{
-    subjectId: ID!
-  }
-
-  input AskCreator{
-    subjectId: ID!
-    question: String!
   }
 `;

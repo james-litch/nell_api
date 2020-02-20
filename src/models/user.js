@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import mongoose, { Schema } from 'mongoose';
+import { Schema, model, ObjectId } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
-
-const { ObjectId } = Schema.Types;
 
 const userSchema = new Schema({
   email: {
@@ -17,12 +15,28 @@ const userSchema = new Schema({
 
   password: String,
 
-  subjects: [{ type: ObjectId, ref: 'Subject' }],
+  subjects: [
+    {
+      subject: { type: ObjectId, ref: 'Subject' },
+      admin: Boolean,
+      _id: false,
+    },
+  ],
 
   tokenCount: { type: Number, default: 0 },
 },
 
 { timestamps: true });
+
+// checks password against hashed password.
+userSchema.methods.matchesPassword = function (password) {
+  return compare(password, this.password);
+};
+
+// populate document after find operation.
+userSchema.pre('find', function () {
+  this.populate('subjects.subject');
+});
 
 // hash password before saving user.
 userSchema.pre('save', async function () {
@@ -34,24 +48,19 @@ userSchema.pre('save', async function () {
 // hash password after its been updated
 userSchema.pre('updateOne', async function () {
   const docToUpdate = await this.model.findOne(this.getQuery());
+
   if (docToUpdate.password !== this._update.$set.password) {
-    console.log(this._update.$set.password);
     const newPassword = await hash(this._update.$set.password, 10);
-    console.log(newPassword);
+
     this._update.$set.password = newPassword;
   }
 });
-
-// checks password against hashed password.
-userSchema.methods.matchesPassword = function (password) {
-  return compare(password, this.password);
-};
 
 // static method for determining whether a field is in the database already
 userSchema.statics.doesntExist = async function (options) {
   return await this.countDocuments(options) === 0;
 };
 
-const User = mongoose.model('User', userSchema);
+const User = model('User', userSchema);
 
 export default User;

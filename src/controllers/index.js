@@ -1,24 +1,24 @@
-import * as UserController from './user';
+import * as User from './user';
 
-import * as SubjectController from './subject';
+import * as Subject from './subject';
 
-import * as QuestionController from './question';
+import * as Question from './question';
 
-import * as ExamController from './exam';
+import * as Exam from './exam';
 
-import * as CurrentQuestionController from './currentQuestion';
+import * as Dictionary from './dictionary';
 
-import * as DictionaryController from './dictionary';
+import * as Validate from './validate';
 
-import * as ValidationController from './validate';
+import * as Tokens from './token';
 
 
 export {
-  UserController,
-  SubjectController,
-  QuestionController,
-  ExamController,
-  CurrentQuestionController,
-  DictionaryController,
-  ValidationController,
+  User,
+  Subject,
+  Question,
+  Exam,
+  Dictionary,
+  Validate,
+  Tokens,
 };

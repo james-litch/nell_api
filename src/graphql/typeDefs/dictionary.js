@@ -3,25 +3,26 @@ import { gql } from 'apollo-server-express';
 export default gql`
 
   extend type Mutation{
-    addDefinition(input: AddDefinition): String @auth
-    deleteDefinitions(input: DeleteDefinitions): String @auth
-    
+     addDefinition(input: AddDefinition): Definition @auth
+     removeDefinitions(input: RemoveDefinitions): String @auth
   }
 
   type Definition{
-    id: ID!
-    phrase: String!
-    definition: String!
+      id: ID!
+      phrase: String!
+      definition: String!
   }
 
   input AddDefinition{
-    subject: ID! 
+    subjectId: ID!  
     phrase: String!
     definition: String!
   }
 
-  input DeleteDefinitions{
-    subject: ID! 
-    definitions: [ID!]!
+  input RemoveDefinitions{
+    subjectId: ID!
+    definitionIds: [ID!]!
   }
+
+  
 `;

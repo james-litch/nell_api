@@ -3,64 +3,41 @@ import { gql } from 'apollo-server-express';
 export default gql`
 
   extend type Mutation{
-    addQuestion(input: AddQuestion) : String @auth
-    createExam(input: CreateExam): String @auth
-    addCurrentQuestion(input: AddCurrentQuestion): String @auth
+     addQuestion(input: AddQuestion): Question @auth
+     removeQuestions(input: RemoveQuestions): String @auth
 
-    deleteQuestions(input: DeleteQuestions) : String @auth
-    deleteExams(input: DeleteExams): String @auth
-  }
+     makeQuestionCurrent(input: CurrentQuestion): String @auth
+     removeQuestionCurrent(input: CurrentQuestion): String @auth
+}
 
   type Question{
-    id: ID!
-    question: String!
-    answers: [String!]!
-    correctAnswer: String!
-    createdAt: String!
-    updatedAt: String!
+      id: ID!
+      question: String!
+      correctAnswer: String!
+      answers: [Answer!]!
+      currentQuestion: Boolean!
   }
 
-  type Exam{
-    name: String!
-    description: String!
-    questions: [Question!]!
-  }
-
-  type CurrentQuestion{
-    description: String!
-    question: Question!
-    answeredRight: Int!
-    
+  type Answer{
+      answer: String!
+      totalChosen: Int!
   }
 
   input AddQuestion{
-    subject: ID!
+    subjectId: ID!  
     question: String!
-    answers: [String!]!
-    correctAnswer: String!
+    answers:[String!]!
+    correctAnswer: Int!
   }
 
-  input CreateExam{
-    subject: ID!
-    name: String!
-    description: String!
-    questions: [ID!]!
+  input RemoveQuestions{
+    subjectId: ID!
+    questionIds: [ID!]!
   }
 
-  input AddCurrentQuestion{
-    subject: ID!
-    description: String!
-    question: ID!
+  input CurrentQuestion{
+    subjectId: ID!
+    questionId: ID!
   }
 
-  input DeleteQuestions{
-    subject: ID!
-    questions: [ID!]!
-   
-  }
-
-  input DeleteExams{
-    subject: ID!
-    exams: [ID!]!
-  }
 `;
