@@ -32,11 +32,18 @@ const signIn = async ({ email, password }) => {
   return { user, tokens };
 };
 
-const endSession = () => {
-
+const endSession = ({ userId }) => {
+  const update = User.findOneAndUpdate(
+    { _id: userId },
+    { $inc: { tokenCount: 1 } },
+    (err, doc) => {
+      if (err) throw new Error(err);
+    },
+  );
+  return 'success';
 };
 
-const chnagePassword = () => {
+const changePassword = () => {
 
 };
 
@@ -46,5 +53,5 @@ const getUser = async ({ userId }) => {
 };
 
 export {
-  signUp, signIn, getUser, endSession, chnagePassword,
+  signUp, signIn, getUser, endSession, changePassword,
 };
