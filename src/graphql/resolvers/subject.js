@@ -8,20 +8,16 @@ export default {
   Mutation: {
 
     createSubject: (root, { input }, { req }, info) => Subject.create({
-      userId: req.userId,
+      userId: req.user.id,
       subjectName: input.subjectName,
       password: input.password,
     }),
 
     joinSubject: (root, { input }, { req }, info) => Subject.join({
-      userId: req.userId,
+      userId: req.user.id,
       subjectId: input.subjectId,
       password: input.password,
     }),
 
-  },
-  Subject: {
-    users: ({ users }, args, context, info) => User.getUsers(users),
-    admin: ({ admin }, args, context, info) => User.getUser({ userId: admin }),
   },
 };
