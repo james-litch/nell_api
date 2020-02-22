@@ -2,14 +2,21 @@ import { sign, verify } from 'jsonwebtoken';
 import { User } from '../models';
 import { JWT_KEY, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE } from '../../config';
 
-const generate = (user) => {
-  const accessBody = { id: user.id, subjects: user.subjects };
-  const refreshBody = { id: user.id, subjects: user.subjects, count: user.tokenCount };
-
+const generate = ({ accessBody, refreshBody }) => {
   const refreshToken = sign(refreshBody, JWT_KEY, { expiresIn: REFRESH_TOKEN_LIFE });
   const accessToken = sign(accessBody, JWT_KEY, { expiresIn: ACCESS_TOKEN_LIFE });
 
   return { accessToken, refreshToken };
+};
+
+// generate the jwt body for a populated user query
+const tokenBody = (user) => {
+  const subjectsObj = user.subjects.map((item) => ({ id: item.subject._id, admin: item.admin }));
+
+  const refreshBody = { id: user.id, subjects: subjectsObj, tokenCount: user.tokenCount };
+  const accessBody = { id: user.id, subjects: subjectsObj };
+
+  return { accessBody, refreshBody };
 };
 
 const validate = (token) => {
@@ -33,8 +40,8 @@ const persist = async (req, res, next) => {
   const decodedAccess = validate(access);
 
   if (decodedAccess) {
-    console.log(decodedAccess);
     req.user = decodedAccess;
+
     return next();
   }
 
@@ -42,19 +49,21 @@ const persist = async (req, res, next) => {
 
   if (decodedRefresh) {
     const user = await User.findById(decodedRefresh.id);
-    console.log(decodedRefresh);
 
     // if user does'nt exist or token counts arent equal skip.
     if (!user || decodedRefresh.count !== user.tokenCount) return next();
 
     req.user = decodedRefresh;
 
-    const { accessToken, refreshToken } = generate(user);
+    const accessBody = { id: user.id, subjects: user.subjects };
+    const refreshBody = { id: user.id, subjects: user.subjects, count: user.tokenCount };
+
+    const { accessToken, refreshToken } = generate({ accessBody, refreshBody });
 
     res.set({
-      'Access-Control-Expose-Headers': 'accessToken,refreshToken',
-      accessToken,
-      refreshToken,
+      'Access-Control-Expose-Headers': 'access-token,refresh-token',
+      'access-token': accessToken,
+      'refresh-token': refreshToken,
     });
   }
   return next();
@@ -62,5 +71,5 @@ const persist = async (req, res, next) => {
 
 
 export {
-  generate, validate, persist,
+  generate, validate, persist, tokenBody,
 };
