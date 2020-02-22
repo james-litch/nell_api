@@ -34,6 +34,12 @@ subjectSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
+// populate document after find operation.
+subjectSchema.pre('find', function () {
+  this.populate('users');
+  this.populate('admin');
+});
+
 const Subject = model('Subject', subjectSchema);
 
 export default Subject;
