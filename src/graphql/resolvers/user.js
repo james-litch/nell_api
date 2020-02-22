@@ -21,11 +21,11 @@ export default {
     }),
 
     invalidateToken: (root, args, { req }, info) => User.endSession({
-      userId: req.userId,
+      userId: req.user.id,
     }),
 
     changePassword: (root, { input }, { req }, info) => User.changePassword({
-      userId: req.userId,
+      userId: req.user.id,
       oldPassword: input.oldPassword,
       newPassword: input.newPassword,
     }),
