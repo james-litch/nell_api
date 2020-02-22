@@ -3,7 +3,7 @@ import { User, Subject } from '../../controllers';
 export default {
   Query: {
     me: (root, { input }, { req }, info) => User.getUser({
-      userId: req.userId,
+      userId: req.user.id,
     }),
 
   },
@@ -19,6 +19,7 @@ export default {
       email: input.email,
       password: input.password,
     }),
+
     invalidateToken: (root, args, { req }, info) => User.endSession({
       userId: req.userId,
     }),
