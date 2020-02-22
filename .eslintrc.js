@@ -22,5 +22,6 @@ module.exports = {
     "func-names": "off",
     "no-param-reassign": "off",
     "newline-per-chained-call": "off",
+    "no-underscore-dangle": "off",
   },
 };
