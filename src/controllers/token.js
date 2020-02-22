@@ -51,7 +51,7 @@ const persist = async (req, res, next) => {
     const user = await User.findById(decodedRefresh.id);
 
     // if user does'nt exist or token counts arent equal skip.
-    if (!user || decodedRefresh.count !== user.tokenCount) return next();
+    if (!user || decodedRefresh.tokenCount !== user.tokenCount) return next();
 
     req.user = decodedRefresh;
 
