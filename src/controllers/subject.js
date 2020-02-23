@@ -1,5 +1,5 @@
 import { Subject, User } from '../models';
-import { validateInput } from './validate';
+import { validateInput, isSubject, matchesPassword } from './validate';
 import { SubjectInput } from '../validators';
 
 const create = async ({ userId, subjectName, password }) => {
@@ -24,8 +24,23 @@ const create = async ({ userId, subjectName, password }) => {
   return subject;
 };
 
-const join = () => {
+const join = async ({ userId, subjectId, password }) => {
+  // validate inputs.
+  validateInput({ subjectId, password }, SubjectInput.join);
 
+  // check if subject exists.
+  const subject = await isSubject(subjectId);
+
+  // check if passwords match.
+  await matchesPassword(subject, password);
+
+  // add user to subjectband subject to user.
+
+  await Subject.findOneAndUpdate({ _id: subjectId }, { $addToSet: { users: userId } });
+  const subjectObj = { subject: subject._id, admin: true };
+  await User.findOneAndUpdate({ _id: userId }, { $addToSet: { subjects: subjectObj } });
+
+  return subject;
 };
 
 export {
