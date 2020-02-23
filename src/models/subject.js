@@ -50,6 +50,12 @@ subjectSchema.pre('find', function (next) {
   next();
 });
 
+subjectSchema.pre('findOne', function (next) {
+  this.populate('users');
+  this.populate('admin');
+  next();
+});
+
 const Subject = model('Subject', subjectSchema);
 
 export default Subject;
