@@ -50,7 +50,7 @@ const persist = async (req, res, next) => {
   if (decodedRefresh) {
     const user = await User.findById(decodedRefresh.id);
 
-    // if user does'nt exist or token counts arent equal skip.
+    // if user doesn't exist or token counts arent equal skip.
     if (!user || decodedRefresh.tokenCount !== user.tokenCount) return next();
 
     req.user = decodedRefresh;
@@ -69,7 +69,20 @@ const persist = async (req, res, next) => {
   return next();
 };
 
+// TODO: probably wont work. may not need.
+const refresh = (user, req, res, next) => {
+  const { accessToken, refreshToken } = generate(tokenBody(user));
+
+  res.set({
+    'Access-Control-Expose-Headers': 'access-token,refresh-token',
+    'access-token': accessToken,
+    'refresh-token': refreshToken,
+  });
+
+  next();
+};
+
 
 export {
-  generate, validate, persist, tokenBody,
+  generate, validate, persist, tokenBody, refresh,
 };
