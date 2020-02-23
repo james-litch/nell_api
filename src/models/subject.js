@@ -1,6 +1,7 @@
+/* eslint-disable prefer-arrow-callback */
 import { Schema, ObjectId, model } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
-import { Question, Exam, Definition } from './subdocs';
+import { Exam, Definition } from './subdocs';
 
 const subjectSchema = new Schema({
   name: String,
@@ -23,10 +24,18 @@ const subjectSchema = new Schema({
 { timestamps: true });
 
 // hash password before saving user.
-subjectSchema.pre('save', async function () {
+subjectSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await hash(this.password, 10);
   }
+  next();
+});
+
+// populate document after create operation.
+subjectSchema.post('save', function (doc, next) {
+  doc.populate('admin').execPopulate(function () {
+    next();
+  });
 });
 
 // checks password against hashed password.
@@ -35,9 +44,10 @@ subjectSchema.methods.matchesPassword = function (password) {
 };
 
 // populate document after find operation.
-subjectSchema.pre('find', function () {
+subjectSchema.pre('find', function (next) {
   this.populate('users');
   this.populate('admin');
+  next();
 });
 
 const Subject = model('Subject', subjectSchema);
