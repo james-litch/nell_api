@@ -7,7 +7,6 @@ class AuthDirective extends SchemaDirectiveVisitor {
 
     field.resolve = function (...args) {
       const [, , context] = args;
-
       const { user } = context.req;
 
       if (!user) throw new AuthenticationError('UNAUTHENTICATED');
