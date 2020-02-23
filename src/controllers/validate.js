@@ -18,9 +18,10 @@ const matchesPassword = async (object, password) => {
 
 const isUser = async (email) => {
   // check if email exists.
-  const user = await User.find().where('email').equals(email).exec();
-  if (!user[0]) throw new AuthenticationError(INVALID_CREDENTIALS);
-  return user[0];
+  const user = await User.findOne({ email });
+
+  if (!user) throw new AuthenticationError(INVALID_CREDENTIALS);
+  return user;
 };
 
 export {
