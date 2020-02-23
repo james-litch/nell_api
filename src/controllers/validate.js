@@ -20,10 +20,21 @@ const isUser = async (email) => {
   // check if email exists.
   const user = await User.findOne({ email });
 
+  // if user doesnt exist throw error.
   if (!user) throw new AuthenticationError(INVALID_CREDENTIALS);
   return user;
 };
 
+const isSubject = async (subjectId) => {
+  // check if subject exists.
+  const subject = await Subject.findOne({ _id: subjectId });
+
+  // if user doesnt exist throw error.
+  if (!subject) throw new UserInputError(INVALID_CREDENTIALS);
+
+  return subject;
+};
+
 export {
-  validateInput, matchesPassword, isUser,
+  validateInput, matchesPassword, isUser, isSubject,
 };
