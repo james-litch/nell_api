@@ -48,8 +48,8 @@ const changePassword = () => {
 };
 
 const getUser = async ({ userId }) => {
-  const user = await User.find().where('_id').equals(userId).exec();
-  return user[0];
+  const user = await User.findOne({ _id: userId });
+  return user;
 };
 
 export {
