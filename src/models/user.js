@@ -34,19 +34,27 @@ userSchema.methods.matchesPassword = function (password) {
 };
 
 // populate document after find operation.
-userSchema.pre('find', function () {
+// userSchema.pre('find', function (next) {
+//   this.populate('subjects.subject');
+//   next();
+// });
+
+// populate document after find operation.
+userSchema.pre('findOne', function (next) {
   this.populate('subjects.subject');
+  next();
 });
 
 // hash password before saving user.
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
     this.password = await hash(this.password, 10);
   }
+  next();
 });
 
 // hash password after its been updated
-userSchema.pre('updateOne', async function () {
+userSchema.pre('updateOne', async function (next) {
   const docToUpdate = await this.model.findOne(this.getQuery());
 
   if (docToUpdate.password !== this._update.$set.password) {
@@ -54,6 +62,7 @@ userSchema.pre('updateOne', async function () {
 
     this._update.$set.password = newPassword;
   }
+  next();
 });
 
 // static method for determining whether a field is in the database already
