@@ -1,4 +1,4 @@
-import { Subject, User } from '../../controllers';
+import { Subject } from '../../controllers';
 
 export default {
   Query: {
