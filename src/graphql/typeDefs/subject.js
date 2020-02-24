@@ -13,6 +13,7 @@ export default gql`
     admin: User!
     users: [User!]
     dictionary: [Definition!]
+    exams: [Exam!]
     questions:[Question!]
     createdAt: String!
     updatedAt: String!
