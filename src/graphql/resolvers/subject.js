@@ -19,6 +19,10 @@ export default {
       password: input.password,
     }),
 
+    deleteSubject: (root, { input }, { req }, info) => Subject.remove({
+      subjectId: input.subjectId,
+    }),
+
     askAdmin: (root, { input }, { req }, info) => Subject.ask({
       subjectId: input.subjectId,
       question: input.question,
