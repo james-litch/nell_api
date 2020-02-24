@@ -43,6 +43,11 @@ const join = async ({ userId, subjectId, password }) => {
   return subject;
 };
 
+const remove = async ({ subjectId }) => {
+  // validate inputs.
+  validateInput({ subjectId }, SubjectInput.remove);
+};
+
 const ask = async ({ subjectId, question }) => {
   // validate inputs.
   validateInput({ subjectId, question }, SubjectInput.ask);
@@ -71,5 +76,5 @@ const clearAsk = async ({ subjectId }) => {
 };
 
 export {
-  create, join, ask, clearAsk,
+  create, join, remove, ask, clearAsk,
 };
