@@ -21,5 +21,10 @@ const idArray = Joi.array().required().items(id).label('ID Array');
 const description = Joi.string().required().min(2).max(256).label('Description');
 
 export {
-  name, email, password, id, phrase, definition, question, answer, answers, idArray, description, index,
+  name, email,
+  password, id,
+  phrase, definition,
+  question, answer,
+  answers, idArray,
+  description, index,
 };
