@@ -11,4 +11,5 @@ export default [
   subject,
   dictionary,
   question,
+  exam,
 ];
