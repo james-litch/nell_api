@@ -6,7 +6,7 @@ export default {
   },
 
   Mutation: {
-
+    createExam: (root, { input }, { req }, info) => Exam.create({}),
 
   },
 
