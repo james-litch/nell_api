@@ -5,9 +5,10 @@ export default gql`
   extend type Mutation{
      createSubject(input: CreateSubject): Subject @auth
      joinSubject(input: JoinSubject): Subject @auth  
+     deleteSubject(input: DeleteSubject): String! @admin
 
      askAdmin(input: AskAdmin): String! @auth
-     clearAskAdmin(input: ClearAskAdmin): String!
+     clearAskAdmin(input: ClearAskAdmin): String! @admin
   }
 
   type Subject{
@@ -39,6 +40,10 @@ export default gql`
   }
 
   input ClearAskAdmin{
+    subjectId: ID!
+  }
+
+  input DeleteSubject{
     subjectId: ID!
   }
 `;
