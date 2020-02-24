@@ -18,7 +18,7 @@ const subjectSchema = new Schema({
 
   dictionary: [Definition],
 
-  creatorQuestions: [{ type: String }],
+  adminQuestions: [{ type: String }],
 },
 
 { timestamps: true });

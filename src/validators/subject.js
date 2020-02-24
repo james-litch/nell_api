@@ -1,5 +1,7 @@
 import Joi from '@hapi/joi';
-import { name, id, password } from './fields';
+import {
+  name, id, password, question,
+} from './fields';
 
 const create = (data) => {
   const schema = Joi.object({
@@ -15,7 +17,23 @@ const join = (data) => {
   return schema.validate(data);
 };
 
+const ask = (data) => {
+  const schema = Joi.object({
+    subjectId: id, question,
+  });
+  return schema.validate(data);
+};
+
+const clearAsk = (data) => {
+  const schema = Joi.object({
+    subjectId: id,
+  });
+  return schema.validate(data);
+};
+
 export {
   create,
   join,
+  ask,
+  clearAsk,
 };

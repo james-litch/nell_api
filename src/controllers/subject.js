@@ -43,6 +43,33 @@ const join = async ({ userId, subjectId, password }) => {
   return subject;
 };
 
+const ask = async ({ subjectId, question }) => {
+  // validate inputs.
+  validateInput({ subjectId, question }, SubjectInput.ask);
+
+  // push question to admin questions.
+  const update = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    { $push: { adminQuestions: question } },
+    { new: true },
+  );
+
+  return 'success';
+};
+
+const clearAsk = async ({ subjectId }) => {
+  // validate inputs.
+  validateInput({ subjectId }, SubjectInput.clearAsk);
+
+  // clear content.
+  const update = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    { $set: { adminQuestions: [] } },
+    { new: true },
+  );
+  return 'success';
+};
+
 export {
-  create, join,
+  create, join, ask, clearAsk,
 };

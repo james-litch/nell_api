@@ -19,5 +19,14 @@ export default {
       password: input.password,
     }),
 
+    askAdmin: (root, { input }, { req }, info) => Subject.ask({
+      subjectId: input.subjectId,
+      question: input.question,
+    }),
+
+    clearAskAdmin: (root, { input }, { req }, info) => Subject.clearAsk({
+      subjectId: input.subjectId,
+    }),
+
   },
 };

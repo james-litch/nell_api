@@ -5,6 +5,9 @@ export default gql`
   extend type Mutation{
      createSubject(input: CreateSubject): Subject @auth
      joinSubject(input: JoinSubject): Subject @auth  
+
+     askAdmin(input: AskAdmin): String! @auth
+     clearAskAdmin(input: ClearAskAdmin): String!
   }
 
   type Subject{
@@ -15,10 +18,10 @@ export default gql`
     dictionary: [Definition!]
     exams: [Exam!]
     questions:[Question!]
+    adminQuestions: [String!]
     createdAt: String!
     updatedAt: String!
   }
-
 
   input CreateSubject{
     subjectName: String! 
@@ -28,5 +31,14 @@ export default gql`
   input JoinSubject{
     subjectId: ID! 
     password: String!
+  }
+
+  input AskAdmin{
+    subjectId: ID!
+    question: String!
+  }
+
+  input ClearAskAdmin{
+    subjectId: ID!
   }
 `;
