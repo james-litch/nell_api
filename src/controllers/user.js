@@ -32,8 +32,8 @@ const signIn = async ({ email, password }) => {
   return { user, tokens };
 };
 
-const endSession = ({ userId }) => {
-  const update = User.findOneAndUpdate(
+const endSession = async ({ userId }) => {
+  const update = await User.findOneAndUpdate(
     { _id: userId },
     { $inc: { tokenCount: 1 } },
     (err, doc) => {
@@ -54,10 +54,12 @@ const changePassword = async ({ userId, oldPassword, newPassword }) => {
   await matchesPassword(user, oldPassword);
 
   // update password.
-  await user.update({ $set: { password: newPassword } });
+  await user.updateOne({ $set: { password: newPassword } });
 
   // invalidate token (increases token count).
   endSession({ userId });
+
+  return 'success';
 };
 
 const getUser = async ({ userId }) => {
