@@ -16,9 +16,9 @@ const matchesPassword = async (object, password) => {
   if (!match) throw new AuthenticationError(INVALID_CREDENTIALS);
 };
 
-const isUser = async (email) => {
+const isUser = async (filter) => {
   // check if email exists.
-  const user = await User.findOne({ email });
+  const user = await User.findOne(filter);
 
   // if user doesnt exist throw error.
   if (!user) throw new AuthenticationError(INVALID_CREDENTIALS);

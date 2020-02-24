@@ -21,7 +21,7 @@ const signIn = async ({ email, password }) => {
   validateInput({ email, password }, UserInput.signIn);
 
   // check email exists.
-  const user = await isUser(email);
+  const user = await isUser({ email });
 
   // check password is correct.
   await matchesPassword(user, password);
@@ -43,12 +43,25 @@ const endSession = ({ userId }) => {
   return 'success';
 };
 
-const changePassword = () => {
+const changePassword = async ({ userId, oldPassword, newPassword }) => {
+  // validate inputs.
+  validateInput({ oldPassword, newPassword }, UserInput.changePassword);
 
+  // find user.
+  const user = await isUser({ _id: userId });
+
+  // check if old password matches with stored.
+  await matchesPassword(user, oldPassword);
+
+  // update password and count.
+  await user.update({ $set: { password: newPassword } });
+
+  // invalidate token.
+  endSession({ userId });
 };
 
 const getUser = async ({ userId }) => {
-  const user = await User.findOne({ _id: userId });
+  const user = await isUser({ _id: userId });
   return user;
 };
 
