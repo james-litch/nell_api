@@ -48,6 +48,7 @@ subjectSchema.pre('find', function (next) {
   this.populate('users');
   this.populate('admin');
   this.populate('questions');
+  this.populate('exams.questions');
   next();
 });
 
@@ -55,7 +56,14 @@ subjectSchema.pre('findOne', function (next) {
   this.populate('users');
   this.populate('admin');
   this.populate('questions');
+  this.populate('exams.questions');
   next();
+});
+// TODO: try and populate questions.
+subjectSchema.post('findOne', function (doc, next) {
+  doc.populate('exams.questions').execPopulate(function () {
+    next();
+  });
 });
 
 const Subject = model('Subject', subjectSchema);
