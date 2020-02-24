@@ -3,11 +3,11 @@ import { gql } from 'apollo-server-express';
 export default gql`
 
   extend type Mutation{
-     addQuestion(input: AddQuestion): Question @auth
-     removeQuestions(input: RemoveQuestions): String @auth
+     addQuestion(input: AddQuestion): Question @admin
+     removeQuestions(input: RemoveQuestions): String @admin
 
-     makeQuestionCurrent(input: CurrentQuestion): String @auth
-     removeQuestionCurrent(input: CurrentQuestion): String @auth
+     makeQuestionCurrent(input: CurrentQuestion): String @admin
+     removeQuestionCurrent(input: CurrentQuestion): String @admin
 }
 
   type Question{
