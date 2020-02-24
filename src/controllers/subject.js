@@ -37,7 +37,7 @@ const join = async ({ userId, subjectId, password }) => {
   // add user to subjectband subject to user.
 
   await Subject.findOneAndUpdate({ _id: subjectId }, { $addToSet: { users: userId } });
-  const subjectObj = { subject: subject._id, admin: true };
+  const subjectObj = { subject: subject._id, admin: false };
   await User.findOneAndUpdate({ _id: userId }, { $addToSet: { subjects: subjectObj } });
 
   return subject;
