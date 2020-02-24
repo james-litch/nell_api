@@ -47,12 +47,14 @@ subjectSchema.methods.matchesPassword = function (password) {
 subjectSchema.pre('find', function (next) {
   this.populate('users');
   this.populate('admin');
+  this.populate('questions');
   next();
 });
 
 subjectSchema.pre('findOne', function (next) {
   this.populate('users');
   this.populate('admin');
+  this.populate('questions');
   next();
 });
 
