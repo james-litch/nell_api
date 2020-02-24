@@ -53,10 +53,10 @@ const changePassword = async ({ userId, oldPassword, newPassword }) => {
   // check if old password matches with stored.
   await matchesPassword(user, oldPassword);
 
-  // update password and count.
+  // update password.
   await user.update({ $set: { password: newPassword } });
 
-  // invalidate token.
+  // invalidate token (increases token count).
   endSession({ userId });
 };
 
