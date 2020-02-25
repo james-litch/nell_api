@@ -30,14 +30,55 @@ const remove = () => {
 
 };
 
-const makeCurrent = () => {
+const addCurrent = async ({ subjectId, questionId }) => {
+  // validate inputs.
+  validateInput({ subjectId, questionId }, QuestionInput.addCurrent);
 
+  // add question id to currentQuestions.
+  const update = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    { $addToSet: { currentQuestions: questionId } },
+    { new: true },
+  );
+  const currQuestions = update.currentQuestions;
+  console.log(currQuestions);
+  return currQuestions;
 };
 
-const removeCurrent = () => {
+const removeCurrent = async ({ subjectId }) => {
+  // validate inputs.
+  validateInput({ subjectId }, QuestionInput.removeCurrent);
 
+  // add question id to currentQuestions.
+  const update = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    { $set: { currentQuestions: [] } },
+    { new: true },
+  );
+  return 'succsess';
+};
+
+const answer = async ({
+  userId, subjectId, questionId, answerIndex,
+}) => {
+  // validate inputs.
+  validateInput({ subjectId, questionId, answerIndex }, QuestionInput.answer);
+  const ansIndex = {};
+  ansIndex[`answers.${answerIndex}.totalChosen`] = 1;
+
+
+  // increment answer index total add user to aswered by.
+  const update = await Question.findOneAndUpdate(
+    { _id: questionId },
+    {
+      $inc: ansIndex,
+      $addToSet: { answeredBy: userId },
+    },
+    { new: true },
+  );
+  return update;
 };
 
 export {
-  add, remove, makeCurrent, removeCurrent,
+  add, remove, addCurrent, removeCurrent, answer,
 };
