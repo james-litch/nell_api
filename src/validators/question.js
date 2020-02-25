@@ -17,7 +17,7 @@ const remove = (data) => {
   return schema.validate(data);
 };
 
-const makeCurrent = (data) => {
+const addCurrent = (data) => {
   const schema = Joi.object({
     subjectId: id, questionId: id,
   });
@@ -26,12 +26,19 @@ const makeCurrent = (data) => {
 
 const removeCurrent = (data) => {
   const schema = Joi.object({
-    subjectId: id, questionId: id,
+    subjectId: id,
+  });
+  return schema.validate(data);
+};
+
+const answer = (data) => {
+  const schema = Joi.object({
+    subjectId: id, questionId: id, answerIndex: index,
   });
   return schema.validate(data);
 };
 
 
 export {
-  add, remove, makeCurrent, removeCurrent,
+  add, remove, addCurrent, removeCurrent, answer,
 };
