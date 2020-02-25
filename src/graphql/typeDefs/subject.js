@@ -19,6 +19,7 @@ export default gql`
     dictionary: [Definition!]
     exams: [Exam!]
     questions:[Question!]
+    currentQuestions:[Question!]
     adminQuestions: [String!]
     createdAt: String!
     updatedAt: String!

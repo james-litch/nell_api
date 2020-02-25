@@ -6,8 +6,10 @@ export default gql`
      addQuestion(input: AddQuestion): Question @admin
      removeQuestions(input: RemoveQuestions): String @admin
 
-     makeQuestionCurrent(input: CurrentQuestion): String @admin
-     removeQuestionCurrent(input: CurrentQuestion): String @admin
+     addCurrentQuestion(input: CurrentQuestion): [Question!] @admin
+     removeCurrentQuestion(input: RemoveCurrentQuestion): String @admin
+
+     answerQuestion(input: AnswerQuestion): Question! @auth
 }
 
   type Question{
@@ -15,7 +17,7 @@ export default gql`
       question: String!
       correctAnswer: String!
       answers: [Answer!]!
-      currentQuestion: Boolean!
+      answeredBy: [User!]
   }
 
   type Answer{
@@ -38,6 +40,16 @@ export default gql`
   input CurrentQuestion{
     subjectId: ID!
     questionId: ID!
+  }
+
+  input RemoveCurrentQuestion{
+    subjectId: ID!
+  }
+
+  input AnswerQuestion{
+    subjectId: ID!
+    questionId: ID!
+    answer: Int!
   }
 
 `;

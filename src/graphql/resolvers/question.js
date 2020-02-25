@@ -20,16 +20,21 @@ export default {
       questionIds: input.questionIds,
     }),
 
-    makeQuestionCurrent: (root, { input }, { req }, info) => Question.makeCurrent({
-      userId: req.user.id,
+    addCurrentQuestion: (root, { input }, { req }, info) => Question.addCurrent({
       subjectId: input.subjectId,
       questionId: input.questionId,
     }),
 
-    removeQuestionCurrent: (root, { input }, { req }, info) => Question.removeCurrent({
+    removeCurrentQuestion: (root, { input }, { req }, info) => Question.removeCurrent({
+      subjectId: input.subjectId,
+
+    }),
+
+    answerQuestion: (root, { input }, { req }, info) => Question.answer({
       userId: req.user.id,
       subjectId: input.subjectId,
       questionId: input.questionId,
+      answerIndex: input.answer,
     }),
   },
 
