@@ -14,6 +14,8 @@ const subjectSchema = new Schema({
 
   questions: [{ type: ObjectId, ref: 'Question' }],
 
+  currentQuestions: [{ type: ObjectId, ref: 'Question' }],
+
   exams: [Exam],
 
   dictionary: [Definition],
@@ -31,11 +33,45 @@ subjectSchema.pre('save', async function (next) {
   next();
 });
 
+const autopopulate = function (next) {
+  this.populate('users');
+  this.populate('admin');
+  this.populate('questions');
+  this.populate('exams.questions');
+  this.populate('currentQuestions');
+  next();
+};
+
+// populate document after find operation.
+subjectSchema
+  .pre('find', autopopulate)
+  .pre('findOne', autopopulate)
+  .pre('update', autopopulate)
+  .pre('save', autopopulate);
+
 // populate document after create operation.
 subjectSchema.post('save', function (doc, next) {
-  doc.populate('admin').execPopulate(function () {
-    next();
-  });
+  doc
+    .populate('users')
+    .populate('admin')
+    .populate('questions')
+    .populate('exams.questions')
+    .populate('currentQuestions')
+    .execPopulate(function () {
+      next();
+    });
+});
+
+subjectSchema.post('update', function (doc, next) {
+  doc
+    .populate('users')
+    .populate('admin')
+    .populate('questions')
+    .populate('exams.questions')
+    .populate('currentQuestions')
+    .execPopulate(function () {
+      next();
+    });
 });
 
 // checks password against hashed password.
@@ -43,28 +79,6 @@ subjectSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
-// populate document after find operation.
-subjectSchema.pre('find', function (next) {
-  this.populate('users');
-  this.populate('admin');
-  this.populate('questions');
-  this.populate('exams.questions');
-  next();
-});
-
-subjectSchema.pre('findOne', function (next) {
-  this.populate('users');
-  this.populate('admin');
-  this.populate('questions');
-  this.populate('exams.questions');
-  next();
-});
-// TODO: try and populate questions.
-subjectSchema.post('findOne', function (doc, next) {
-  doc.populate('exams.questions').execPopulate(function () {
-    next();
-  });
-});
 
 const Subject = model('Subject', subjectSchema);
 
