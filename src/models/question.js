@@ -7,11 +7,18 @@ const questionSchema = new Schema({
 
   correctAnswer: Number,
 
-  currentQuestion: { type: Boolean, default: false },
-
   answeredBy: [{ type: ObjectId, ref: 'User' }],
 },
 { timestamps: true });
+
+const autopopulate = function (next) {
+  this.populate('answeredBy');
+  next();
+};
+
+questionSchema
+  .pre('find', autopopulate)
+  .pre('findOne', autopopulate);
 
 const Question = model('Question', questionSchema);
 
