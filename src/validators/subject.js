@@ -17,6 +17,20 @@ const join = (data) => {
   return schema.validate(data);
 };
 
+const remove = (data) => {
+  const schema = Joi.object({
+    subjectId: id,
+  });
+  return schema.validate(data);
+};
+
+const leave = (data) => {
+  const schema = Joi.object({
+    subjectId: id,
+  });
+  return schema.validate(data);
+};
+
 const ask = (data) => {
   const schema = Joi.object({
     subjectId: id, question,
@@ -34,6 +48,8 @@ const clearAsk = (data) => {
 export {
   create,
   join,
+  leave,
+  remove,
   ask,
   clearAsk,
 };
