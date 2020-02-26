@@ -8,20 +8,20 @@ export default gql`
      deleteSubject(input: DeleteSubject): String! @admin
      leaveSubject(input: LeaveSubject): String! @inSubject
 
-     askAdmin(input: AskAdmin): String! @inSubject
-     clearAskAdmin(input: ClearAskAdmin): String! @admin
+     subjectFeedback(input: SubjectFeedback): String! @inSubject
+     clearFeedback(input: ClearFeedback): String! @admin
   }
 
   type Subject{
     id: ID!
     name: String!
-    admin: User!
+    admins: [User!]
     users: [User!]
     dictionary: [Definition!]
     exams: [Exam!]
     questions:[Question!]
     currentQuestions:[Question!]
-    adminQuestions: [String!]
+    feedback: [String!]
     createdAt: String!
     updatedAt: String!
   }
@@ -36,12 +36,12 @@ export default gql`
     password: String!
   }
 
-  input AskAdmin{
+  input SubjectFeedback{
     subjectId: ID!
     question: String!
   }
 
-  input ClearAskAdmin{
+  input ClearFeedback{
     subjectId: ID!
   }
 

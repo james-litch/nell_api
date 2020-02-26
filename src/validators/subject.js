@@ -31,14 +31,14 @@ const leave = (data) => {
   return schema.validate(data);
 };
 
-const ask = (data) => {
+const feedback = (data) => {
   const schema = Joi.object({
     subjectId: id, question,
   });
   return schema.validate(data);
 };
 
-const clearAsk = (data) => {
+const clearFeedback = (data) => {
   const schema = Joi.object({
     subjectId: id,
   });
@@ -50,6 +50,6 @@ export {
   join,
   leave,
   remove,
-  ask,
-  clearAsk,
+  feedback,
+  clearFeedback,
 };

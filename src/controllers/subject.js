@@ -9,7 +9,7 @@ const create = async ({ userId, subjectName, password }) => {
   // create subject.
   const subject = await Subject.create({
     name: subjectName,
-    admin: userId,
+    admins: [userId],
     password,
   });
 
@@ -46,35 +46,74 @@ const join = async ({ userId, subjectId, password }) => {
 const remove = async ({ subjectId }) => {
   // validate inputs.
   validateInput({ subjectId }, SubjectInput.remove);
+
+  // delete subject, return users and questions.
+  const subject = await Subject.findOne(
+    { _id: subjectId },
+  );
+
+  let { questions, users, admins } = subject;
+
+  users = users.map((item) => item._id);
+  admins = admins.map((item) => item._id);
+  questions = questions.map((item) => item._id);
+  users = Array.from(new Set(users.concat(admins)));
+  console.log(users, questions);
+
+
+  // delete questions if array contains any ids.
+
+  // delete subject from users.
+
+  if (subject) return 'success';
+  return 'error';
 };
 
-const ask = async ({ subjectId, question }) => {
+const feedback = async ({ subjectId, question }) => {
   // validate inputs.
-  validateInput({ subjectId, question }, SubjectInput.ask);
+  validateInput({ subjectId, question }, SubjectInput.feedback);
 
   // push question to admin questions.
   const update = await Subject.findOneAndUpdate(
     { _id: subjectId },
-    { $push: { adminQuestions: question } },
+    { $push: { feedback: question } },
     { new: true },
   );
 
   return 'success';
 };
 
-const clearAsk = async ({ subjectId }) => {
+const clearFeedback = async ({ subjectId }) => {
   // validate inputs.
-  validateInput({ subjectId }, SubjectInput.clearAsk);
+  validateInput({ subjectId }, SubjectInput.clearFeedback);
 
   // clear content.
   const update = await Subject.findOneAndUpdate(
     { _id: subjectId },
-    { $set: { adminQuestions: [] } },
+    { $set: { feedback: [] } },
     { new: true },
   );
   return 'success';
 };
 
+const leave = async ({ userId, subjectId }) => {
+  // validate inputs
+  validateInput({ subjectId }, SubjectInput.leave);
+
+  // remove user from subject and subject from user.
+  const subject = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    { $pull: { users: userId } },
+  );
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    { $pull: { subjects: { subject: { _id: subjectId } } } },
+  );
+  if (subject && user) return 'success';
+  return 'error';
+};
+
 export {
-  create, join, remove, ask, clearAsk,
+  create, join, leave, remove, feedback, clearFeedback,
 };

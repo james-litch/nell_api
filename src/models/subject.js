@@ -10,7 +10,7 @@ const subjectSchema = new Schema({
 
   users: [{ type: ObjectId, ref: 'User' }],
 
-  admin: { type: ObjectId, ref: 'User' },
+  admins: [{ type: ObjectId, ref: 'User' }],
 
   questions: [{ type: ObjectId, ref: 'Question' }],
 
@@ -20,7 +20,7 @@ const subjectSchema = new Schema({
 
   dictionary: [Definition],
 
-  adminQuestions: [{ type: String }],
+  feedback: [{ type: String }],
 },
 
 { timestamps: true });
@@ -35,7 +35,7 @@ subjectSchema.pre('save', async function (next) {
 
 const autopopulate = function (next) {
   this.populate('users');
-  this.populate('admin');
+  this.populate('admins');
   this.populate('questions');
   this.populate('exams.questions');
   this.populate('currentQuestions');
@@ -53,7 +53,7 @@ subjectSchema
 subjectSchema.post('save', function (doc, next) {
   doc
     .populate('users')
-    .populate('admin')
+    .populate('admins')
     .populate('questions')
     .populate('exams.questions')
     .populate('currentQuestions')

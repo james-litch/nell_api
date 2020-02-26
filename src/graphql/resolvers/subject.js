@@ -28,12 +28,12 @@ export default {
       subjectId: input.subjectId,
     }),
 
-    askAdmin: (root, { input }, { req }, info) => Subject.ask({
+    subjectFeedback: (root, { input }, { req }, info) => Subject.feedback({
       subjectId: input.subjectId,
       question: input.question,
     }),
 
-    clearAskAdmin: (root, { input }, { req }, info) => Subject.clearAsk({
+    clearFeedback: (root, { input }, { req }, info) => Subject.clearFeedback({
       subjectId: input.subjectId,
     }),
 
