@@ -1,4 +1,4 @@
-import { Subject, User } from '../models';
+import { Subject, User, Question } from '../models';
 import { validateInput, isSubject, matchesPassword } from './validate';
 import { SubjectInput } from '../validators';
 
@@ -47,25 +47,33 @@ const remove = async ({ subjectId }) => {
   // validate inputs.
   validateInput({ subjectId }, SubjectInput.remove);
 
-  // delete subject, return users and questions.
-  const subject = await Subject.findOne(
+  // delete subject.
+  const subject = await Subject.findOneAndRemove(
     { _id: subjectId },
   );
 
+  // extract questions users and admins.
   let { questions, users, admins } = subject;
-
+  // map through objects and retrieve ids.
   users = users.map((item) => item._id);
   admins = admins.map((item) => item._id);
-  questions = questions.map((item) => item._id);
-  users = Array.from(new Set(users.concat(admins)));
-  console.log(users, questions);
 
+  // combine admins and users.
+  users = Array.from(new Set(users.concat(admins)));
 
   // delete questions if array contains any ids.
+  if (questions.length > 0) {
+    questions = questions.map((item) => item._id);
+    const removedQuestions = await Question.deleteMany({ _id: { $in: questions } });
+  }
 
   // delete subject from users.
+  const updatedUsers = await User.updateMany(
+    { _id: { $in: users } },
+    { $pull: { subjects: { subject: { _id: subjectId } } } },
+  );
 
-  if (subject) return 'success';
+  if (subject && updatedUsers) return 'success';
   return 'error';
 };
 
