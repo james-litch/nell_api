@@ -9,7 +9,7 @@ export default gql`
      addCurrentQuestion(input: CurrentQuestion): [Question!] @admin
      removeCurrentQuestion(input: RemoveCurrentQuestion): String @admin
 
-     answerQuestion(input: AnswerQuestion): Question! @auth
+     answerQuestion(input: AnswerQuestion): Question! @inSubject
 }
 
   type Question{

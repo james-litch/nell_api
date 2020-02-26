@@ -7,7 +7,7 @@ export default gql`
      joinSubject(input: JoinSubject): Subject @auth  
      deleteSubject(input: DeleteSubject): String! @admin
 
-     askAdmin(input: AskAdmin): String! @auth
+     askAdmin(input: AskAdmin): String! @inSubject
      clearAskAdmin(input: ClearAskAdmin): String! @admin
   }
 
