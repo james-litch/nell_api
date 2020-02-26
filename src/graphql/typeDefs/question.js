@@ -6,8 +6,8 @@ export default gql`
      addQuestion(input: AddQuestion): Question @admin
      removeQuestions(input: RemoveQuestions): String @admin
 
-     addCurrentQuestion(input: CurrentQuestion): [Question!] @admin
-     removeCurrentQuestion(input: RemoveCurrentQuestion): String @admin
+     addCurrentQuestion(input: CurrentQuestion): String! @admin
+     removeCurrentQuestion(input: RemoveCurrentQuestion): String! @admin
 
      answerQuestion(input: AnswerQuestion): Question! @inSubject
 }

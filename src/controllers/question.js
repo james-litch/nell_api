@@ -40,9 +40,8 @@ const addCurrent = async ({ subjectId, questionId }) => {
     { $addToSet: { currentQuestions: questionId } },
     { new: true },
   );
-  const currQuestions = update.currentQuestions;
-  console.log(currQuestions);
-  return currQuestions;
+  if (update) return 'success';
+  return 'error';
 };
 
 const removeCurrent = async ({ subjectId }) => {
@@ -55,7 +54,8 @@ const removeCurrent = async ({ subjectId }) => {
     { $set: { currentQuestions: [] } },
     { new: true },
   );
-  return 'succsess';
+  if (update) return 'succsess';
+  return 'error';
 };
 
 const answer = async ({
