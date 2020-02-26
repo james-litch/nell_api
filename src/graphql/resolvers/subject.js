@@ -23,6 +23,11 @@ export default {
       subjectId: input.subjectId,
     }),
 
+    leaveSubject: (root, { input }, { req }, info) => Subject.leave({
+      userId: req.user.id,
+      subjectId: input.subjectId,
+    }),
+
     askAdmin: (root, { input }, { req }, info) => Subject.ask({
       subjectId: input.subjectId,
       question: input.question,
