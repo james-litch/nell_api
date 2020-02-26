@@ -6,6 +6,7 @@ export default gql`
      createSubject(input: CreateSubject): Subject @auth
      joinSubject(input: JoinSubject): Subject @auth  
      deleteSubject(input: DeleteSubject): String! @admin
+     leaveSubject(input: LeaveSubject): String! @inSubject
 
      askAdmin(input: AskAdmin): String! @inSubject
      clearAskAdmin(input: ClearAskAdmin): String! @admin
@@ -45,6 +46,10 @@ export default gql`
   }
 
   input DeleteSubject{
+    subjectId: ID!
+  }
+
+  input LeaveSubject{
     subjectId: ID!
   }
 `;
