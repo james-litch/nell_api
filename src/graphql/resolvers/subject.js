@@ -2,7 +2,9 @@ import { Subject } from '../../controllers';
 
 export default {
   Query: {
-
+    findSubject: (root, { input }, { req }, info) => Subject.find({
+      subjectId: input.subjectId,
+    }),
   },
 
   Mutation: {

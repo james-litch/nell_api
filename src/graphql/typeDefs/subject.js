@@ -2,6 +2,10 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 
+  extend type Query{
+    findSubject(input: FindSubject): Subject! @inSubject
+  }
+
   extend type Mutation{
      createSubject(input: CreateSubject): Subject @auth
      joinSubject(input: JoinSubject): Subject @auth  
@@ -52,4 +56,9 @@ export default gql`
   input LeaveSubject{
     subjectId: ID!
   }
+
+  input FindSubject{
+    subjectId: ID!
+  }
+
 `;
