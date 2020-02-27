@@ -26,8 +26,30 @@ const add = async ({
   return createdQuestion;
 };
 
-const remove = () => {
+const remove = async ({ subjectId, questionIds }) => {
+  // validate inputs.
+  validateInput({ subjectId, questionIds }, QuestionInput.remove);
 
+  // remove question.
+  const deletedQuestion = await Question.deleteMany(
+    { _id: { $in: questionIds } },
+  );
+
+  // remove question from subject and current questions.
+  const subject = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    {
+      $pull: {
+        questions: { $in: questionIds },
+        currentQuestions: { $in: questionIds },
+        'exams.$[].questions': { $in: questionIds },
+      },
+    },
+    { new: true },
+  );
+
+  if (deletedQuestion && subject) return 'success';
+  return 'error';
 };
 
 const addCurrent = async ({ subjectId, questionId }) => {

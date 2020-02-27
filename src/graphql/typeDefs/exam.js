@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express';
 export default gql`
 
   extend type Mutation{
-     createExam(input: CreateExam): Exam! @admin
+     createExam(input: CreateExam): String! @admin
      removeExams(input: RemoveExams): String! @admin
   }
 
