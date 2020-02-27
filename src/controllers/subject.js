@@ -122,6 +122,11 @@ const leave = async ({ userId, subjectId }) => {
   return 'error';
 };
 
+const find = async ({ subjectId }) => {
+  const subject = await Subject.findOne({ _id: subjectId });
+  return subject;
+};
+
 export {
-  create, join, leave, remove, feedback, clearFeedback,
+  create, join, leave, remove, feedback, clearFeedback, find,
 };
