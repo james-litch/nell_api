@@ -17,10 +17,8 @@ const create = async ({
     { $push: { exams: { name, description, questions } } },
     { new: true },
   );
-  // TODO: try to populate exam questions on create
-  const lastExam = update.exams.slice(-1)[0];
-
-  return lastExam;
+  if (update) return 'success';
+  return 'error';
 };
 
 const remove = async ({ userId, subjectId, examIds }) => {
