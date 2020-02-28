@@ -39,5 +39,10 @@ export default {
       subjectId: input.subjectId,
     }),
 
+    addAdmin: (root, { input }, { req }, info) => Subject.addAdmin({
+      subjectId: input.subjectId,
+      userId: input.userId,
+    }),
+
   },
 };

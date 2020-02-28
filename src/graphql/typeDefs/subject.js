@@ -14,6 +14,8 @@ export default gql`
 
      subjectFeedback(input: SubjectFeedback): String! @inSubject
      clearFeedback(input: ClearFeedback): String! @admin
+
+     addAdmin(input: AddAdmin): String! @admin
   }
 
   type Subject{
@@ -59,6 +61,11 @@ export default gql`
 
   input FindSubject{
     subjectId: ID!
+  }
+
+  input AddAdmin{
+    subjectId: ID!
+    userId: ID!
   }
 
 `;
