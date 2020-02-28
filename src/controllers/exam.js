@@ -36,7 +36,7 @@ const remove = async ({ userId, subjectId, examIds }) => {
 
 const find = async ({ subjectId, examId }) => {
   // validate inputs.
-
+  validateInput({ subjectId, examId }, ExamInput.find);
   // find subject.
   const subject = await Subject.findOne(
     { _id: subjectId },

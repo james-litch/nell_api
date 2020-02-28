@@ -17,6 +17,13 @@ const remove = (data) => {
   return schema.validate(data);
 };
 
+const find = (data) => {
+  const schema = Joi.object({
+    subjectId: id, examId: id,
+  });
+  return schema.validate(data);
+};
+
 export {
-  create, remove,
+  create, remove, find,
 };
