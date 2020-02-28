@@ -45,6 +45,13 @@ const clearFeedback = (data) => {
   return schema.validate(data);
 };
 
+const addAdmin = (data) => {
+  const schema = Joi.object({
+    subjectId: id, userId: id,
+  });
+  return schema.validate(data);
+};
+
 export {
   create,
   join,
@@ -52,4 +59,5 @@ export {
   remove,
   feedback,
   clearFeedback,
+  addAdmin,
 };

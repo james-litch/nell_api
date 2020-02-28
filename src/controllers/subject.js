@@ -127,6 +127,21 @@ const find = async ({ subjectId }) => {
   return subject;
 };
 
+const addAdmin = async ({ userId, subjectId }) => {
+  // validate inputs.
+  validateInput({ userId, subjectId }, SubjectInput.addAdmin);
+
+  const update = await Subject.findOneAndUpdate(
+    { _id: subjectId },
+    {
+      $pull: { users: userId },
+      $addToSet: { admins: userId },
+    },
+  );
+  if (update) return 'success';
+  return 'error';
+};
+
 export {
-  create, join, leave, remove, feedback, clearFeedback, find,
+  create, join, leave, remove, feedback, clearFeedback, find, addAdmin,
 };
