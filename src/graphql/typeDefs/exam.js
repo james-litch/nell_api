@@ -2,6 +2,10 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 
+  extend type Query{
+    findExam(input: FindExam): Exam! @inSubject
+  }
+
   extend type Mutation{
      createExam(input: CreateExam): String! @admin
      removeExams(input: RemoveExams): String! @admin
@@ -24,6 +28,11 @@ export default gql`
   input RemoveExams{
     subjectId: ID!
     examIds: [ID!]!
+  }
+
+  input FindExam{
+    subjectId: ID!
+    examId: ID!
   }
 
 

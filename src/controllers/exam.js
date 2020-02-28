@@ -34,8 +34,18 @@ const remove = async ({ userId, subjectId, examIds }) => {
   return 'success';
 };
 
-const find = () => {
+const find = async ({ subjectId, examId }) => {
+  // validate inputs.
 
+  // find subject.
+  const subject = await Subject.findOne(
+    { _id: subjectId },
+  );
+
+  // find specific exam.
+  const exam = subject.exams.find((item) => item._id.toString() === examId);
+
+  return exam;
 };
 
 export {

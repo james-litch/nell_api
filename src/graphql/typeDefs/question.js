@@ -2,6 +2,10 @@ import { gql } from 'apollo-server-express';
 
 export default gql`
 
+  extend type Query{
+    findQuestion(input: FindQuestion): Question! @inSubject
+  }
+
   extend type Mutation{
      addQuestion(input: AddQuestion): Question @admin
      removeQuestions(input: RemoveQuestions): String @admin
@@ -10,7 +14,7 @@ export default gql`
      removeCurrentQuestion(input: RemoveCurrentQuestion): String! @admin
 
      answerQuestion(input: AnswerQuestion): Question! @inSubject
-}
+  }
 
   type Question{
       id: ID!
@@ -50,6 +54,11 @@ export default gql`
     subjectId: ID!
     questionId: ID!
     answer: Int!
+  }
+
+  input FindQuestion{
+    subjectId: ID!
+    questionId: ID!
   }
 
 `;

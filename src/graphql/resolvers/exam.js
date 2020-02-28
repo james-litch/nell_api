@@ -2,7 +2,10 @@ import { Exam } from '../../controllers';
 
 export default {
   Query: {
-
+    findExam: (root, { input }, { req }, info) => Exam.find({
+      subjectId: input.subjectId,
+      examId: input.examId,
+    }),
   },
 
   Mutation: {

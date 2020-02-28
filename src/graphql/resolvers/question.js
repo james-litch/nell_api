@@ -2,7 +2,10 @@ import { Question } from '../../controllers';
 
 export default {
   Query: {
-
+    findQuestion: (root, { input }, { req }, info) => Question.find({
+      subjectId: input.subjectId,
+      questionId: input.questionId,
+    }),
   },
 
   Mutation: {

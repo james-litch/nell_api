@@ -101,6 +101,14 @@ const answer = async ({
   return update;
 };
 
+const find = async ({ subjectId, questionId }) => {
+  const subject = await Subject.findOne(
+    { _id: subjectId },
+  );
+  const question = subject.questions.find((item) => item._id.toString() === questionId);
+  return question;
+};
+
 export {
-  add, remove, addCurrent, removeCurrent, answer,
+  add, remove, addCurrent, removeCurrent, answer, find,
 };
