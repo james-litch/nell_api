@@ -25,7 +25,7 @@ import {
       typeDefs,
       resolvers,
       schemaDirectives,
-      playground: !IN_PROD,
+      playground: true,
       context: ({ req, res }) => ({ req, res }),
     });
 
