@@ -26,6 +26,7 @@ import {
       resolvers,
       schemaDirectives,
       playground: true,
+      introspection: true,
       context: ({ req, res }) => ({ req, res }),
     });
 
