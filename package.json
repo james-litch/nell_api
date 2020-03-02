@@ -11,7 +11,8 @@
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "start": "npm run build && node ./build/index.js",
-    "heroku-postbuild": "npm start"
+    "heroku-postbuild": "npm start",
+    "heroku-prebuild": "rm -rf node_modules"
   },
   "author": "James Litchfield",
   "license": "ISC",
