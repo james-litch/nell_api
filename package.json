@@ -7,12 +7,9 @@
     "npm": "6.13.7"
   },
   "scripts": {
-    "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-babel",
-    "start": "npm run build && node ./build/index.js",
-    "heroku-postbuild": "npm start",
-    "heroku-prebuild": "rm -rf node_modules"
+    "start": "babel-node src/index.js",
+    "heroku-postbuild": "npm install"
+
   },
   "author": "James Litchfield",
   "license": "ISC",
