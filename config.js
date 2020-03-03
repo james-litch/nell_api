@@ -1,5 +1,5 @@
 export const {
-  APP_PORT,
+  PORT,
 
   NODE_ENV,
 

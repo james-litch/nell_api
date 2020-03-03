@@ -6,7 +6,7 @@ import resolvers from './graphql/resolvers';
 import schemaDirectives from './graphql/directives';
 import { Tokens } from './controllers';
 import {
-  APP_PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
+  PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
 } from '../config';
 
 
@@ -32,9 +32,9 @@ import {
 
     server.applyMiddleware({ app });
 
-    const port = APP_PORT || 3000;
+    const port = PORT || 3000;
 
-    app.listen({ port }, () => console.log(`🚀 Server ready at port ${APP_PORT}`));
+    app.listen({ port }, () => console.log(`🚀 Server ready at port ${port}`));
   } catch (err) {
     console.error(err);
   }
