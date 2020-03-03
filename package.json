@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
-    "serve": "babel-node src/index.js"
+    "serve": "babel src/index.js"
   },
   "author": "James Litchfield",
   "license": "ISC",
