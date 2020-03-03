@@ -7,10 +7,8 @@
     "npm": "6.13.7"
   },
   "scripts": {
-    "clean": "rm -rf build && mkdir build",
-    "build-server": "babel-node -d ./build ./src -s",
-    "build": "npm run clean && npm run build-server",
-    "start": "node ./build/index.js"
+ 
+    "start": "nodemon --exec babel-node src/index.js"
   },
   "author": "James Litchfield",
   "license": "ISC",
