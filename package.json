@@ -7,7 +7,7 @@
     "npm": "6.13.7"
   },
   "scripts": {
-    "server": "nodemon src/index.js --execbabel-node",
+    "server": "nodemon src/index.js --exec babel-node",
     "start": "babel-node src/index.js"
   },
   "author": "James Litchfield",
