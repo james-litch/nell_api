@@ -32,7 +32,7 @@ import {
 
     server.applyMiddleware({ app });
 
-    app.listen({ port: APP_PORT }, () => console.log(`🚀 Server ready at http://localhost:${APP_PORT}${server.graphqlPath}`));
+    app.listen({ port: APP_PORT || 3000 }, () => console.log(`🚀 Server ready at http://localhost:${APP_PORT}${server.graphqlPath}`));
   } catch (err) {
     console.error(err);
   }
