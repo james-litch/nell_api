@@ -9,8 +9,8 @@
   "scripts": {
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./src -s",
-    "build": "npm run clean && npm run build-server",
-    "start": "node ./build/index.js"
+    "server": "nodemon src/index.js --execbabel-node",
+    "start": "node src/index.js"
   },
   "author": "James Litchfield",
   "license": "ISC",
@@ -30,6 +30,7 @@
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
+    "babel-cli": "^6.26.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.19.1",
