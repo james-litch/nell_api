@@ -7,8 +7,6 @@
     "npm": "6.13.7"
   },
   "scripts": {
-    "clean": "rm -rf build && mkdir build",
-    "build-server": "babel -d ./build ./src -s",
     "server": "nodemon src/index.js --execbabel-node",
     "start": "node src/index.js"
   },
