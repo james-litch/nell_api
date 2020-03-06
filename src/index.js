@@ -7,7 +7,7 @@ import schemaDirectives from './graphql/directives';
 import { Tokens } from './controllers';
 import {
   PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
-} from '../config';
+} from './config';
 
 
 (async () => {
