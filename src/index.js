@@ -4,7 +4,6 @@ import mongoose from 'mongoose';
 import typeDefs from './graphql/typeDefs';
 import resolvers from './graphql/resolvers';
 import schemaDirectives from './graphql/directives';
-import '@babel/polyfill';
 import { Tokens } from './controllers';
 import {
   PORT, IN_PROD, DB_USERNAME, DB_PASSWORD, DB_NAME,
