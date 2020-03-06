@@ -1,6 +1,6 @@
 import { sign, verify } from 'jsonwebtoken';
 import { User } from '../models';
-import { JWT_KEY, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE } from '../../config';
+import { JWT_KEY, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE } from '../config';
 
 const generate = ({ accessBody, refreshBody }) => {
   const refreshToken = sign(refreshBody, JWT_KEY, { expiresIn: REFRESH_TOKEN_LIFE });
