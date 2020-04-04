@@ -11,7 +11,7 @@ export default gql`
      removeQuestions(input: RemoveQuestions): String @admin
 
      addCurrentQuestion(input: CurrentQuestion): String! @admin
-     removeCurrentQuestion(input: RemoveCurrentQuestion): String! @admin
+     removeCurrentQuestions(input: RemoveCurrentQuestions): String! @admin
 
      answerQuestion(input: AnswerQuestion): Question! @inSubject
   }
@@ -46,8 +46,9 @@ export default gql`
     questionId: ID!
   }
 
-  input RemoveCurrentQuestion{
+  input RemoveCurrentQuestions{
     subjectId: ID!
+    questionIds: [ID!]!
   }
 
   input AnswerQuestion{

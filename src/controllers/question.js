@@ -66,16 +66,17 @@ const addCurrent = async ({ subjectId, questionId }) => {
   return 'error';
 };
 
-const removeCurrent = async ({ subjectId }) => {
+const removeCurrent = async ({ subjectId, questionIds }) => {
   // validate inputs.
-  validateInput({ subjectId }, QuestionInput.removeCurrent);
+  validateInput({ subjectId, questionIds }, QuestionInput.removeCurrent);
 
   // add question id to currentQuestions.
   const update = await Subject.findOneAndUpdate(
     { _id: subjectId },
-    { $set: { currentQuestions: [] } },
+    { $pull: { currentQuestions: { $in: questionIds } } },
     { new: true },
   );
+
   if (update) return 'succsess';
   return 'error';
 };

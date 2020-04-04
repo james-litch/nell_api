@@ -26,7 +26,7 @@ const addCurrent = (data) => {
 
 const removeCurrent = (data) => {
   const schema = Joi.object({
-    subjectId: id,
+    subjectId: id, questionIds: idArray,
   });
   return schema.validate(data);
 };

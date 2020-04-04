@@ -28,9 +28,9 @@ export default {
       questionId: input.questionId,
     }),
 
-    removeCurrentQuestion: (root, { input }, { req }, info) => Question.removeCurrent({
+    removeCurrentQuestions: (root, { input }, { req }, info) => Question.removeCurrent({
       subjectId: input.subjectId,
-
+      questionIds: input.questionIds,
     }),
 
     answerQuestion: (root, { input }, { req }, info) => Question.answer({
