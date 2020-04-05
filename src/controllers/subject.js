@@ -145,8 +145,6 @@ const addAdmin = async ({ userId, subjectId }) => {
     { new: true },
   );
 
-  console.log(updateUser);
-
   if (updateSubject && updateUser) return 'success';
   return 'error';
 };
