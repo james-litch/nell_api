@@ -131,14 +131,23 @@ const addAdmin = async ({ userId, subjectId }) => {
   // validate inputs.
   validateInput({ userId, subjectId }, SubjectInput.addAdmin);
 
-  const update = await Subject.findOneAndUpdate(
+  const updateSubject = await Subject.findOneAndUpdate(
     { _id: subjectId },
     {
       $pull: { users: userId },
       $addToSet: { admins: userId },
     },
   );
-  if (update) return 'success';
+
+  const updateUser = await User.findOneAndUpdate(
+    { _id: userId, 'subjects.subject': subjectId },
+    { 'subjects.$.admin': true },
+    { new: true },
+  );
+
+  console.log(updateUser);
+
+  if (updateSubject && updateUser) return 'success';
   return 'error';
 };
 
