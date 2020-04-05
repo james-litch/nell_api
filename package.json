@@ -8,7 +8,7 @@
   },
   "scripts": {
     "devstart": "nodemon src/index.js --exec babel-node",
-    "start": "npm run build && node ./build",
+    "start": "npm run build && node --max-http-header-size=80000 ./build",
     "build": "npm run clean && npm run babel-build",
     "babel-build": "babel -d ./build ./src -s",
     "clean": "rm -rf ./build && mkdir build",
