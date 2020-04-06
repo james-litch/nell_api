@@ -11,11 +11,11 @@ const add = async ({
   // add definition to dictionary.
   const update = await Subject.findOneAndUpdate(
     { _id: subjectId },
-    { $addToSet: { dictionary: { phrase, definition } } },
+    { $push: { dictionary: { phrase, definition } } },
     { new: true },
   );
-  console.log(update);
-  return { phrase, definition };
+
+  return update.dictionary[update.dictionary.length - 1];
 };
 
 const remove = async ({ userId, subjectId, definitionIds }) => {
