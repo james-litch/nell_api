@@ -17,7 +17,7 @@ const create = async ({
     { $push: { exams: { name, description, questions } } },
     { new: true },
   );
-  if (update) return 'success';
+  if (update) return update.exams[update.exams.length - 1];
   return 'error';
 };
 

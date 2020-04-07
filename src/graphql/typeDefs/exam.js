@@ -7,7 +7,7 @@ export default gql`
   }
 
   extend type Mutation{
-     createExam(input: CreateExam): String! @admin
+     createExam(input: CreateExam): Exam! @admin
      removeExams(input: RemoveExams): String! @admin
   }
 
