@@ -18,7 +18,11 @@ const autopopulate = function (next) {
 
 questionSchema
   .pre('find', autopopulate)
+  .pre('update', autopopulate)
+  .pre('save', autopopulate)
+  .pre('findOneAndUpdate', autopopulate)
   .pre('findOne', autopopulate);
+
 
 const Question = model('Question', questionSchema);
 

@@ -37,6 +37,7 @@ const autopopulate = function (next) {
   this.populate('users');
   this.populate('admins');
   this.populate('questions');
+  this.populate('questions.answeredBy');
   this.populate('exams.questions');
   this.populate('currentQuestions');
   next();
