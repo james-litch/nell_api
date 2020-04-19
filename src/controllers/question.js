@@ -99,7 +99,7 @@ const answer = async ({
     },
     { new: true },
   );
-  console.log(update);
+
   return update;
 };
 
@@ -107,7 +107,9 @@ const find = async ({ subjectId, questionId }) => {
   const subject = await Subject.findOne(
     { _id: subjectId },
   );
+
   const question = subject.questions.find((item) => item._id.toString() === questionId);
+
   return question;
 };
 
