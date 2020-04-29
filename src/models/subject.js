@@ -43,7 +43,7 @@ const autopopulate = function (next) {
   next();
 };
 
-// populate document after find operation.
+// populate document after operation.
 subjectSchema
   .pre('find', autopopulate)
   .pre('findOne', autopopulate)
