@@ -19,7 +19,7 @@
   "dependencies": {
     "@babel/runtime": "^7.8.7",
     "@hapi/joi": "^16.1.8",
-    "apollo-server-express": "^2.9.14",
+    "apollo-server-express": "^2.14.2",
     "bcryptjs": "^2.4.3",
     "dataloader": "^2.0.0",
     "dotenv": "^8.2.0",
